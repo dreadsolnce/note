@@ -1,2 +1,4 @@
-# note
-notes through obsidian
+
+---
+
+*Текстовые заметки созданные в программе* ***OBSIDIAN***
