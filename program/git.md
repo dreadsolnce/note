@@ -27,5 +27,20 @@ git branch <name>
  git checkout <name>
 ```
 
+ *Удалить локальную ветку:*
+```
+  git branch -d <name>
+```
+[^1]
 
+ *Удалить удалённую ветку из репозитория:*
+```
+  git push origin :<name remote>
+  git branch -rD <name remote>
+```
+[^2]
 
+[^1]: git branch -d ansible
+
+[^2]: git push origin :origin/ansible
+git branch -rD origin/ansible
