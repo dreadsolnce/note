@@ -1,4 +1,4 @@
-### Создание токена доступа
+### Создание токена доступа с телефона
 
 1. По ссылке [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new) указать:
 	- имя токена
@@ -10,6 +10,22 @@
 
 [см. рисунок](https://habrastorage.org/r/w1560/getpro/habr/upload_files/bce/e82/ac9/bcee82ac94f9fde7344dfd29d058a98e.png)
 
+### Создание ветки (branch)
+
+*Создание новой ветки:*
+```
+git branch <name>
+```
+
+*Просмотр всех веток:*
+```
+ git branch -a
+```
+
+ *Переключение на ветку:*
+```
+ git checkout <name>
+```
 
 
 
