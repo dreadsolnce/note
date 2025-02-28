@@ -10,6 +10,45 @@
 
 [см. рисунок](https://habrastorage.org/r/w1560/getpro/habr/upload_files/bce/e82/ac9/bcee82ac94f9fde7344dfd29d058a98e.png)
 
+### Инициализация нового проекта
+
+- Перейти в каталог с проектом (пустым либо там уже что то есть)
+```
+git init
+```
+- Создаём файл .gitignore
+```
+vim .gitignore
+```
+- Добавить изменения в индекс
+```
+git add <filename>
+или
+git add -A # добавиьт все
+или
+git add .  # добавить все
+```
+- Создать первый коммит:
+```
+git commit -m "first commit"
+```
+- Создать удалённую ветку 
+```
+git remote add origin https://github.com/dreadsolnce/awesome-app.git
+```
+- Создаем ветку master
+```
+git branch -M master
+```
+- Создаем каталог (проект) awesome-app на сайте github
+
+![[Screenshot 2025-02-11 145200.png]]
+
+- Запушиваем наш проект на git hub
+```
+git push -u origin master
+```
+
 ### Создание ветки (branch)
 
 *Создание новой ветки:*
@@ -44,3 +83,5 @@ git branch <name>
 
 [^2]: git push origin :origin/ansible
 git branch -rD origin/ansible
+
+[^3]: 
