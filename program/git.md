@@ -10,45 +10,6 @@
 
 [см. рисунок](https://habrastorage.org/r/w1560/getpro/habr/upload_files/bce/e82/ac9/bcee82ac94f9fde7344dfd29d058a98e.png)
 
-### Инициализация нового проекта
-
-- Перейти в каталог с проектом (пустым либо там уже что то есть)
-```
-git init
-```
-- Создаём файл .gitignore
-```
-vim .gitignore
-```
-- Добавить изменения в индекс
-```
-git add <filename>
-или
-git add -A # добавиьт все
-или
-git add .  # добавить все
-```
-- Создать первый коммит:
-```
-git commit -m "first commit"
-```
-- Создать удалённую ветку 
-```
-git remote add origin https://github.com/dreadsolnce/awesome-app.git
-```
-- Создаем ветку master
-```
-git branch -M master
-```
-- Создаем каталог (проект) awesome-app на сайте github
-
-![[Screenshot 2025-02-11 145200.png]]
-
-- Запушиваем наш проект на git hub
-```
-git push -u origin master
-```
-
 ### Создание ветки (branch)
 
 *Создание новой ветки:*
@@ -84,4 +45,53 @@ git branch <name>
 [^2]: git push origin :origin/ansible
 git branch -rD origin/ansible
 
-[^3]: 
+### Объединить ветки
+
+*Просмотр всех веток:*
+```
+ git branch -a
+```
+
+*Переключение на ветку, в которую вы хотите объединить изменения::*
+```
+ git checkout main
+```
+
+Выполните команду `git merge`, указав ветку, изменения из которой вы хотите объединить:
+```
+git merge bash
+```
+
+### Включение HTTPS
+
+- ***Установить программное обеспечение***
+```
+sudo apt install certbot
+```
+	
+	Для веб-сервера Apache установить плагин
+```
+sudo apt install python3-certbot-apache
+```
+- ***Установить сертификат TLS***
+```
+sudo certbot --apache --agree-tos --redirect --hsts --staple-ocsp --must-staple --email [email]  -d tile.your-domain.com
+```
+
+
+> [!NOTE] Внимание
+> При появлении ошибки AttributeError: module 'certbot.plugins.common' has no attribute 'TLSSNI01'
+> можно попробовать способ представленный ниже
+
+
+
+
+- Отредактировать файл index.html и заменить весь протокол HTTP на HTTPS
+```
+sudo sed -i 's/http/https/g' /var/www/index.html
+```
+
+##### Ссылки на сайты
+
+[# Как объединить ветки в Git](https://sky.pro/wiki/javascript/kak-obuedinit-vetki-v-git/)
+

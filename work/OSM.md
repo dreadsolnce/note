@@ -371,6 +371,233 @@ systemctl reload apache2
 ##### 12. Предварительная визуализация тайлов
 
 
+> [!NOTE] Важно
+> Предварительно отрисованные тайлы будут кэшироваться в каталоге `/var/cache/renderd/tiles/`.
+> Смотри файл /etc/renderd.conf параметр: tile_dir=/var/cache/renderd/tiles в секции [renderd]
+
+```sql
+render_list -m default -a -z 0 -Z 19 --num-threads=10
+```
+> - m : см. файл /etc/renderd.conf
+
+
+> [!NOTE] Замечание
+> После обновления данных карт, необходимо повторно выполнить предварительную визуализацию всех фрагментов, используя параметр `--force`.
+Данный параметр затирает тайлы.
+
+
+```
+render_list -m default -a -z 0 -Z 19 --num-threads=10 --force
+```
+
+##### 13. Включение https
+
+#### a) Для зарегистрированого домена:
+
+Установить пакет snapd, т.к. классический пакет python3-certbot-apache имеет ошибки
+```
+sudo apt install snapd
+sudo snap install --classic certbot
+```
+
+Получаем и устанавливаем сертификат:
+```
+sudo /snap/bin/certbot --apache --agree-tos --redirect --hsts --staple-ocsp --must-staple --email <email> -d <tile.your-domain.com>
+```
+
+> --register-unsafely-without-email : вы не сможете получать уведомления о приближающемся истечении срока действия или отзыве ваших сертификатов или проблемах с установкой Certbot, которые приведут к невозможности продления (для теста пойдет).
+
+Отредактировать файл index.html и заменить весь протокол HTTP на HTTPS:
+```
+sudo sed -i 's/http/https/g' /var/www/html/osm_app/index.html
+```
+#### б) Для локального домена:
+
+***Создать сертификат используя один из двух вариантов:***
+- 1-й вариант:
+```
+cd ~
+openssl req -x509 -out osm-test.crt -keyout osm-test.key   -newkey rsa:2048 -nodes -sha256   -subj '/CN=localhost' -extensions EXT -config <( \
+   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+```
+- 2-й вариант:
+```
+cd ~
+openssl req -new -x509 -days 30 -keyout server.key -out server.pem
+```
+> на вопрос «Enter PEM pass phrase:» отвечаем паролем
+> на вопрос «Common Name (eg, YOUR name) []:» отвечаем именем сайта, для которого создаем сертификат, например osm,test.local
+
+- Снимаем пароль с ключа:
+```
+cp server.key{,.orig}
+openssl rsa -in server.key.orig -out server.key
+rm server.key.orig
+```
+
+***Далее перемещаем сертификат и ключ в нужную нам директорию:***
+
+```
+sudo -u osm mkdir /home/osm/certs
+sudo mv osm-test.crt  osm-test.key /home/osm/certs
+```
+
+***Включить модуль ssl для apache:***
+```
+sudo a2enmod ssl
+
+systemctl restart apache2
+
+systemctl status apache2
+```
+
+ ***Добавить виртуальный хост VirtualHost *:443 (защищённое соединение) 
+ в файл /etc/apache2/sites-available/tileserver_site.conf***
+
+sudo vim /etc/apache2/sites-available/tileserver_site.conf
+```bash
+<VirtualHost *:80>
+    ServerName osm.test.local   
+    DocumentRoot /var/www/html/osm_app
+    LogLevel info
+ 
+    <Directory /var/cache/renderd/tiles>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+
+        ModTileTileDir /var/cache/renderd/tiles
+        LoadTileConfigFile /etc/renderd.conf
+        ModTileEnableStats On
+        ModTileBulkMode Off
+        ModTileRequestTimeout 3
+        ModTileMissingRequestTimeout 10
+        ModTileMaxLoadOld 2
+        ModTileMaxLoadMissing 5
+        ModTileRenderdSocketName /run/renderd/renderd.sock
+        ModTileCacheDurationMax 604800
+        ModTileCacheDurationDirty 900
+        ModTileCacheDurationMinimum 10800
+        ModTileCacheDurationMediumZoom 13 86400
+        ModTileCacheDurationLowZoom 9 518400
+        ModTileCacheLastModifiedFactor 0.20
+        ModTileEnableTileThrottling Off
+        ModTileEnableTileThrottlingXForward 0
+        ModTileThrottlingTiles 10000 1
+        ModTileThrottlingRenders 128 0.2
+    </Directory>
+
+</VirtualHost>
+
+# +++
+<VirtualHost *:443>
+     SSLEngine on
+     SSLCertificateFile /home/osm/certs/osm-test.crt
+     SSLCertificateKeyFile /home/osm/certs/osm-test.key
+#     SSLCertificateChainFile /etc/ssl/chain.crt
+
+    ServerName osm.test.local
+    DocumentRoot /var/www/html/osm_app
+    LogLevel info
+
+    <Directory /var/cache/renderd/tiles>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+
+        ModTileTileDir /var/cache/renderd/tiles
+        LoadTileConfigFile /etc/renderd.conf
+        ModTileEnableStats On
+        ModTileBulkMode Off
+        ModTileRequestTimeout 3
+        ModTileMissingRequestTimeout 10
+        ModTileMaxLoadOld 2
+        ModTileMaxLoadMissing 5
+        ModTileRenderdSocketName /run/renderd/renderd.sock
+        ModTileCacheDurationMax 604800
+        ModTileCacheDurationDirty 900
+        ModTileCacheDurationMinimum 10800
+        ModTileCacheDurationMediumZoom 13 86400
+        ModTileCacheDurationLowZoom 9 518400
+        ModTileCacheLastModifiedFactor 0.20
+        ModTileEnableTileThrottling Off
+        ModTileEnableTileThrottlingXForward 0
+        ModTileThrottlingTiles 10000 1
+        ModTileThrottlingRenders 128 0.2
+    </Directory>
+
+</VirtualHost>
+#+++
+
+```
+
+***Назначить подключение по https по умолчанию выполнив команду:***
+```
+sudo sed -i 's/http/https/g' /var/www/html/osm_app/index.html
+```
+
+***Перезагрузить службу:***
+```
+sudo systemctl restart apache2.service 
+```
+
+Открыть в браузере страницу: https://osm.test.local/
+
+***Сделать редирект с http:// на https://***
+- sudo a2enmod alias
+- sudo service apache2 restart
+- Добавить в файл /etc/apache2/sites-enabled/tileserver_site.conf строку: `Redirect / https://osm.test.local/`
+
+![[Снимок экрана от 2025-03-03 16-00-10 1.png]]
+
+***Перезагрузить службу:***
+```
+sudo systemctl restart apache2.service 
+```
+
+***Проверить, введя в браузере*** `http://osm.test.local/`, ***что открывается страница*** `https://osm.test.local/`
+
+##### 14. Ограничение доступа к серверу
+
+```bash
+sudo vim /etc/apache2/sites-enabled/tileserver.conf
+```
+
+***Добавьте следующие строки в теги .***
+
+```sql
+    <Location /osm>
+        SetEnvIf Referer test\.local trusted_referer
+        Order deny,allow
+        Deny from all
+        Allow from env=trusted_referer
+    </Location>
+```
+> Приведенный выше код проверяет, включает ли заголовок HTTP-реферера ваш собственный домен (test.local). В противном случае доступ к каталогу `/osm` будет запрещен. Обратная косая черта используется для экранирования символа точки. Иными словами доступ имеют только те, кто входит в домен test.local
+
+![[Снимок экрана от 2025-03-03 17-47-04.png]]
+
+***Чтобы добавить несколько имен хостов в качестве доверенных источников перехода, используйте следующий синтаксис.***
+```sql
+SetEnvIf Referer (example\.com|www\.example\.com|map\.example\.com) trusted_referer
+```
+
+***Сохраните и закройте файл. Затем проверьте синтаксис.***
+```bash
+sudo apache2ctl -t
+```
+
+***Если синтаксис в порядке, перезагрузите Apache, чтобы изменения вступили в силу.***
+```bash
+sudo systemctl reload apache2
+```
+
+
+> [!important] Замечание
+> Т.к. при установке программы renderd у нас создаётся конфигурационный файл **/etc/apache2/conf-available/renderd.conf**, то если данный файл включён **/etc/apache2/conf-enabled/renderd.conf**, то настройки программы renderd в файле виртуального хоста **/etc/apache2/sites-available/tileserver_site.conf** можно не прописывать, т.к. apache подгружает конф. файлы из каталога conf-enabled автоматом. Таким образом, если мы отключим конфигурационный файл renderd.conf командой `a2disconf renderd`, то рендеринг (отрисовка) перестанет работать. Что бы рендеринг заработал мы можем либо раскоментировать параметры в файле **sites-available/tileserver_site.conf** либо снова запустить конф. файл **conf-available/renderd.conf** командой `a2enconf renderd`
+> ![[Снимок экрана от 2025-03-03 16-38-46.png]]
+> 
+
 [Ссылка на инструкцию](http://use.openstreetmap.ru/serving-tiles/manually-building-a-tile-server-20-04-lts/)
 
 ### Обновление карт

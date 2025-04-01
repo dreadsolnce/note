@@ -1,4 +1,3 @@
-
 ##### Установка программы:
 
 > [!NOTE] Доп. информация
@@ -524,7 +523,7 @@ ansible.builtin.package_facts: manager=auto
     msg: "{{ ansible_enp0s8['ipv4']['address'] }}"
 ```
 
-***Debug сообщение вывод объявленной переменной:***
+***Debug сообщение вывод объявленной переменной:***;
 ```
 - name: "Запуск готового склонированного проекта"
   shell: docker compose up -d 
@@ -612,6 +611,8 @@ ansible.builtin.package_facts: manager=auto
 [Ссылка №2 на статью](https://habr.com/ru/articles/305400/)
 
 [Примеры работы с ansible](https://www.dmosk.ru/miniinstruktions.php?mini=ansible-examples)
+
+[Модуль apt](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/deb822_repository_module.html)
 
 [Примеры](https://jakondo.ru/ansible-playbook-sozdanie-polzovatelya-v-linux/)
 
