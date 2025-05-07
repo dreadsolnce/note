@@ -1,6 +1,28 @@
 
 ## Основные команды
 
+***Настройка nginx:***
+1. Основной каталог для сайтов /var/www/html
+> [!important] Важно
+> **Из других каталогов может не запуститься**
+
+2. Изменение владельца запуска службы nginx:
+```
+sudo vim /etc/nginx/nginx.conf
+	параметр: user
+```
+
+3. Для проверки можно попробовать получить статистику каталога от того пользователя под которым запущен сервер nginx и если будет **permission denied**, то таким образом следует, что nginx не может открыть файлы сайта.
+
+4. Лучшим решением в этом случае будет добавить `www-data`в `username`группу:
+```
+gpasswd -a www-data username
+```
+   a) убедитесь, что `username`группа может войти во все каталоги по пути:
+```
+chmod g+x /home && chmod g+x /home/kvl && chmod g+x /home/kvl/html_css
+```
+
 ***Проверка конфигурации:***
 
 ```
@@ -12,7 +34,6 @@ sudo nginx -t
 ```
 sudo nginx -s reload
 ```
-
 
 ## Описание параметров
 
@@ -85,6 +106,22 @@ location ~* \.(?:svgz?|ttf|ttc|otf|eot|woff2?)$ {
 > Обратите внимание на то, что nginx не отдает заголовки Expires. Если для сгенерированных интерпретатором PHP документов это не всегда важно, то статические данные желательно отдавать с подобным заголовком, позволяя броузерам посетителей более активно использовать кэширование. В данном конфигурационном блоке есть раздел location для обработки статических докуменов. Именно в этом блоке добавьте строку expires Xd, где Х — количество дней валидности данных. Например, expires 7d укажет броузеру, что изображения и файлы CSS/JS можно кэшировать на протяжении недели.
 
 
+#### 4. Настройка php-fpm
+
+![[Снимок экрана от 2025-04-11 11-54-24.png]]
+> Все файлы в запросе (http://localhost/api.php) оканчивающиеся на .php будут запускаться (выполняться), а не загружаться.
+
+#### 5. Пропуск favicon.ico
+
+```python
+# skip favicon.ico
+#
+location = /favicon.ico {
+    access_log off;
+    return 204;
+}
+```
+
 ## Настройка nginx в качестве балансировщика
 
 [Ссылка на статью habr.com](https://habr.com/ru/companies/first/articles/683870/)
@@ -97,37 +134,88 @@ cd /etc/nginx/sites-available/ ; sudo vim proxy_to_srv
 Содержимое файла:
 ```
 upstream proxy_to_srv {
-	server 192.168.192.101;
+    server 192.168.192.101:80;
+}
+
+upstream proxy_to_landing {
+    server 192.168.192.101:8080;
+}
+
+upstream proxy_to_default {
+    server 192.168.192.101:8000;
+}
 
 # Этот сервер принимает весь трафик на порт 80 и передает его вышестоящему потоку.
 # Обратите внимание, что имя вышестоящего потока и proxy_pass должны совпадать.
 
 server {
-	listen 80;
-      
-    # server_name mydomain.com;
-      
+    listen 80;
+  
+    server_name www.firesdash.test.local firesdash.test.local;
+  
     location / {
-	    include proxy_params;
-          
+        include proxy_params;
+      
         proxy_pass http://proxy_to_srv;
-          
+      
         proxy_redirect off;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
-      }
-   }
+    }
 }
+
+server {
+    listen 80;
+  
+    server_name www.landing.test.local landing.test.local;
+  
+    location / {
+        include proxy_params;
+      
+        proxy_pass http://proxy_to_landing;
+      
+        proxy_redirect off;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+
+server {
+    listen 80 default_server;
+    #   server_name default_server; 
+    #   server_name www.landing.test.local landing.test.local;
+  
+    location / {
+        include proxy_params;
+      
+        proxy_pass http://proxy_to_default;
+      
+        proxy_redirect off;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+
 ```
 
 > [!NOTE] Описание
 > _**Upstream** определяет, куда Nginx будет передавать запросы после их получения_
 > _**listen** определяет порт 80, через который Nginx будет получать запросы_
-> _**proxy_pass** используется для указания NGINX, _куда отправлять получаемый трафик__
+> _**proxy_pass** используется для указания NGINX, _куда отправлять получаемый трафик_
+> <h5>Общее описание</h5>
+> nginx принимает запросы на 80 порту для трёх сайтов, но в зависимости от server_name<br>
+> (адреса введенного в url) он отправаляет на один из трех блоков.<br>
+> <hr>
+> 
+> **Например**: если ввести в адресную строку http://firesdash.test,local он отправит в первую
+> секцию, т.к. server_name = firesdash.test.local, но если ввести в адресную строку
+> http://firesdash он отправит уже в секцию по умолчанию, которая определяется в третьем
+> блоке, а именно listen 80 **default_server;**
 > 
 
-- 
 ## Примеры 
 
 - #### Одновременный запуск http и https
