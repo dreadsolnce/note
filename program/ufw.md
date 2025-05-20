@@ -68,8 +68,6 @@ sudo ufw allow 21/tcp
 > [!info]
 > можно указывать в формате <номер порта>/<название протокола>
 
-
-
 ```
 sudo ufw allow 3000:3100
 ```
@@ -77,22 +75,33 @@ sudo ufw allow 3000:3100
 sudo ufw allow 3000:3100/tcp
 sudo ufw allow 3000:3100/udp
 ```
+
 ```
+# Работа 
 sudo ufw allow from 123.45.67.89
-```
-```
 sudo ufw allow from 123.45.67.89 to any port 22
 ```
+
+```
+# Работа с диапазонами IP-адресов:
+sudo ufw allow from 123.45.67.89/24
+sudo ufw allow from 123.45.67.89/24 to any port 22
+```
+
 ```
 sudo ufw deny http
 ```
 ```
 sudo ufw deny from 123.45.67.89
 ```
+
 ```
+# Просмотр номеров правил
 sudo ufw status numbered
 ```
+
 ```
+# Удаление правила по его номеру
 sudo ufw delete 2
 ```
 

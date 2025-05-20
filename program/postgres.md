@@ -1,4 +1,4 @@
-[Установка и настройка selectel](https://selectel.ru/blog/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04/)
+ [Установка и настройка selectel](https://selectel.ru/blog/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04/)
 
 <h1>Установка:</h1>
 ```

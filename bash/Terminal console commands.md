@@ -295,6 +295,16 @@ tail -f /var/log/syslog
 > /var/log/auth.log : логи авторизации
 > /var/log/nginx/access.log : доступ с веб серверу Nginx
 
+Регулярная проверка последних 20 строк лога на наличие ошибок 500 от Nginx
+```
+watch -n 5 "tail -n 20 /var/log/nginx/error.log | grep '500'"
+```
+
+Выполнение команды каждую секунду
+```
+watch -n 1 "date"
+```
+
 Информация об оборудовании:
 ```
 cat /proc.cpuinfo
@@ -324,8 +334,24 @@ systemctl reload app
 ```
 > Пояснение: `restart` полностью останавливает приложение и запускает его заново, то `reload` просто позволяет приложению перечитать конфигурационный файл, с которым оно работает, без полного перезапуска
 
-[Ссылка на статью:](https://jino.ru/spravka/articles/systemctl.html#systemctl)
+*Пользователь под кем запущена служба:*
 
+```
+sudo systemctl status fwupd.service | grep 'Main PID'
+```
+
+```
+sudo systemctl status commvault.service
+ps -u -p 1734375
+ps -u -p 1734376
+ps -u -p 1734377
+```
+
+```
+sudo systemctl show commvault.service
+```
+
+[Ссылка на статью:](https://jino.ru/spravka/articles/systemctl.html#systemctl)
 ##### **==Файлы==**
 ***Количество  строк в файле:***
 ```
@@ -351,6 +377,55 @@ cp style.mss style.mss.bak_$(date +%F)
 ***Информация (подробная)о каталоге (файле):***
 ```
 sudo -u www-data stat skillbox/
+```
+
+***Создание файлов по шаблону:***
+```
+touch $(seq -f 'pgsql_2025-05-0%g.sql.gz' 1 9); touch $(seq -f 'pgsql_2025-05-%g.sql.gz' 10 31)
+```
+> Будут созданы файлы:
+> 	pgsql_2025-05-01.sql.gz
+> 	pgsql_2025-05-02.sql.gz
+> 	...
+> 	pgsql_2025-05-10.sql.gz
+> 	pgsql_2025-05-11.sql.gz
+> 	...
+> 	pgsql_2025-05-31.sql.gz
+
+***Поиск (вывод) файлов кроме ..-15.sql.gz***
+```
+find . \( -name "*-1[^5].*" -o -name "*-[023]?.*" \) | sort
+```
+> \*-1\[^5].* - Вывод содержащий 1 и любой символ кроме 5 (кроме pgsql_2025-05-15.sql.gz)
+> 	pgsql_2025-05-10.sql.gz
+> 	pgsql_2025-05-11.sql.gz
+> 	...
+> 	pgsql_2025-05-19.sql.gz
+> \*-\[023]?.* - Вывод всех либо 0 и любой символ, 2 и любой символ, 3 и любой символ
+> 	pgsql_2025-05-01.sql.gz
+> 	...
+> 	pgsql_2025-05-21.sql.gz
+> 	...
+> 	pgsql_2025-05-31.sql.gz
+
+***Удалить все файлы старше 61 дня (но не удалять файлы созданные 15 числа)***
+```
+find $pathB \( -name "*-1[^5].*" -o -name "*-[023]?.*" \) -ctime +61 -delete
+```
+
+***Если нужно найти все файлы свыше 3 дня и после чего удалить их:***
+```
+find /home/captain -type f -mtime +3 -exec rm -rf {} \;
+```
+
+***Найти все файлы которые не новее 21 мая 2025:***
+```
+find . -type f -not -newermt 'may 21 2025'
+```
+
+***Найти все файлы которые не старше 19 мая 2025 21:13***
+```
+find /storage-nfs/ -type f -not -newermt 'may 19 2025 21:13'
 ```
 
 ##### **==Установщик пакетов==**
