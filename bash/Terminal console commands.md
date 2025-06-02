@@ -152,6 +152,31 @@ curl -k https:/google.com
 # Использование авторизации
 curl -u <user:password> https://my-test-api.com/endpoint1
 ```
+##### ==Пользователи==
+
+Создание пользователя:
+```
+useradd -m -s /bin/bash kvl
+```
+
+```
+usermod -aG kvl kvl
+```
+
+```
+passwd kvl
+```
+
+##### ==Терминал==
+
+<h4>Не добивает команды с помощью клавиши TAB</h4>
+Установить пакет:
+
+```
+sudo apt insall bash-completion
+```
+
+
 ##### ==Размер==
 Размер каталогов в отсортированом виде:
 ```
@@ -219,6 +244,18 @@ sudo visudo
 
 > [!NOTE] add string
 > <test_user> ALL=(ALL) NOPASSWD: ALL
+
+Также можно создавать файлы в директории /etc/sudoers.d
+
+```
+visudo -f /etc/sudoers.d/nopass
+```
+
+![[Снимок экрана от 2025-05-30 11-44-57.png]]
+
+```
+sudo chmod 440 nopass
+```
 
 *Запуск определённой команды через sudo без пароля:*
 ```
@@ -442,6 +479,16 @@ apt-cache policy <имя пакета>
 *Установить вместе с предлагаемыми пакетами:*
 ```
 sudo apt install nginx --install-suggests
+```
+
+Установить/переустановить:
+```
+sudo apt-get install --reinstall packet
+```
+
+Установить/переустановить пакет определённой версии:
+```
+sudo apt install --reinstall zabbix-agent2=1:6.0.2-1+ubuntu20.04
 ```
 ##### ==ssh==
 Создание ключ:

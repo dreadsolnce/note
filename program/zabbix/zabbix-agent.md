@@ -1,14 +1,75 @@
-
 # Установка и настройка
 
+ZABBIX AGENT2 новее. Рекомендуем к использованию!
+
+***Из стандартного репозитория операционной системы:***
+
+deb ориентированные:
 ```
 sudo apt install zabbix-agent2
+```
+
+***Из официального репозитория программы zabbix:***
+Для rpm ориентированных:
+
+1. Перейти на сайт https://repo.zabbix.com/zabbix/6.2/rhel/6/x86_64/
+2. Выбрать нужный пакет (скопировать ссылку)
+3. Установить:
+```
+sudo yum install https://repo.zabbix.com/zabbix/6.2/rhel/9/x86_64/zabbix-agent2-6.2.9-release1.el9.x86_64.rpm
+```
+
+для deb ориентированных:
+Добавляем официальный репозиторий Zabbix. Скачиваем пакет в формате `.deb` при помощи утилиты `wget`:
+```
+sudo apt-get install wget
+wget https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest+ubuntu24.04_all.deb
+```
+
+Устанавливаем скачанный файл с помощью утилиты `dpkg`:
+```
+sudo dpkg -i zabbix-release_latest+ubuntu24.04_all.deb
+```
+
+Обновляем списки репозиториев и устанавливаем Zabbix-агент:
+```
+sudo apt update && sudo apt -y install zabbix-agent
+```
+
+***Настройка конфигурационного файла:***
+Открываем на редактирование файл `zabbix_agentd.conf` при помощи любого текстового редактора:
+```
+sudo vim /etc/zabbix/zabbix_agentd.conf
+или
+sudo vim /etc/zabbix/zabbix_agent2.conf
+```
+Необходимо изменить следующие параметры:
+
+- `Server` — необходимо задать доменное имя или IP-адрес, на котором находится сервер Zabbix.
+![[Снимок экрана от 2025-05-21 16-25-04.png]]
+- `ServerActive` — продублировать доменное имя или IP-адрес, на котором находится сервер Zabbix. Данный параметр отвечает за активный режим, когда Zabbix самостоятельно запрашивает необходимые данные.
+![[Снимок экрана от 2025-05-21 16-25-23.png]]
+- `Hostname` — указать hostname агента в точности как он указан в системе. Чтобы узнать имя хоста можно воспользоваться командой `hostname`. Если неправильно указать имя хоста, тогда агент не сможет подключиться к серверу Zabbix.
+![[Снимок экрана от 2025-05-21 16-25-39.png]]
+
+После того как все необходимые изменения были внесены, необходимо перезапустить Zabbix-агент и добавить его в автозагрузку:
+```
+sudo systemctl restart zabbix-agent && sudo systemctl enable zabbix-agent
+или
+sudo systemctl restart zabbix-agent2 && sudo systemctl enable zabbix-agent2
+```
+
+Проверяем статус агента:
+```
+sudo systemctl status zabbix-agent
+или
+sudo systemctl status zabbix-agent2
 ```
 
 ## Просмотр версии
 
 ```
-/usr/sbin/zabbix_agent2 -V
+	/usr/sbin/zabbix_agent2 -V
 ```
 
 ## Просмотр конфигурационного файла

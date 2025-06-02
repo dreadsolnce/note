@@ -371,7 +371,7 @@ git push origin --delete news
 ```
 
 ![[Снимок экрана от 2025-05-15 13-23-30.png]]
-#### Урок 9 # Слияния или мерджи веток
+#### Урок 9 Слияния или мерджи веток
 
 Слить (залить) изменения из локальной ветки в локальный main:
 
@@ -412,8 +412,54 @@ git branch -d news
 ```
 git merge --no-edit main
 ```
+#### Урок 10 Конфликты и их разрешение
 
+```
+#  Работа с кодом
+git checkout -b students
+git add index.html
+git status
+git commit -m 'Add Students'
+git checkout main
+git pull --rebase origin main
+git merge students
+git log --oneline 
+git push origin main
+git branch -d students
+```
 
+```
+git checkout -b students-redisign
+git add .
+git status
+git commit -m 'Added styles for students'
+git checkout main
+--> Кто то делаем изменения на сервере в той же части кода
+--> что и мы (при эотм у нас пока старая ветка main)
+git pull --rebase origin main
+git log --oneline
+git merge students-redisign
+(получаем ошибку)
+```
+![[Снимок экрана от 2025-05-20 15-56-49.png]]
+```
+открываем нашу ide с кодом и там надо вручную решить конфликт (фиксим)
+```
+![[Снимок экрана от 2025-05-20 16-00-57.png]]
+```
+git status
+git add index.html
+git commit -m 'Merge branch students redisign'
+git log --oneline
+git push origin main
+git branch -d students-redisign
+```
+
+***==Жесткий сброс (обнуление истории коммитов):==***
+```
+git reset --hard 00dc21a
+git push -f origin main
+```
 
 ### Создание токена доступа с телефона
 

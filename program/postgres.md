@@ -128,7 +128,7 @@ pg_dump -h localhost -U test test > test_$(date +%d-%m-%y).tar.gzip
 <li>Назначаем права на базу:</li>
 <p><b>см. Назначение прав на базу пользователю</b></p>
 <li>Импортируем сохранённую базу данных</li>
-<p><b>sudo -u postgres psql test < /tmp/test_24-04-25.sql</b></p>
+<p><b>sudo -u postgres psql test < /tmp/test_24-04-25.sql </b></p>
 </ul>
 ## Основные команды:
 
