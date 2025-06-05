@@ -51,3 +51,22 @@ touch passwd
 htpasswd /etc/squid/passwd kvl
 ```
 
+<h4>Настройка безопасности</h4>
+<h5>Установка opendns:</h5>
+www.opendns.com
+
+Залогиниться -> dreadsolnce@gmail.com - пароль длинный
+
+Ввести ip адрес сервера, к которому будут применены настройки dns
+
+![[Screenshot 2025-06-02 112700.png]]
+
+
+<h4>Настройка pi-hole.net</h4>
+
+Блокировщик рекламы
+
+```
+curl -sSL https://install.pi-hole.net | bash
+```
+

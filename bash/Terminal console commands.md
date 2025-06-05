@@ -144,6 +144,11 @@ curl -I https:/google.com
 ```
 
 ```
+# Подключится к прокси серверу
+curl -x "http://kvl:wo4aLm3rZ@212.23.211.120:3128" "https://mail.ru"
+```
+
+```
 # Игнорирование ошибки неправильных или самоподписанных сертификатов
 curl -k https:/google.com
 ```
@@ -151,6 +156,11 @@ curl -k https:/google.com
 ```
 # Использование авторизации
 curl -u <user:password> https://my-test-api.com/endpoint1
+```
+
+```
+# Узнать какой процесс использует порт
+lsof -i :80
 ```
 ##### ==Пользователи==
 
@@ -176,7 +186,18 @@ passwd kvl
 sudo apt insall bash-completion
 ```
 
+Скопировать в буфер обмена
 
+```
+sudo apt install xclip
+`alias pbcopy='xclip -selection clipboard'`
+`alias pbpaste='xclip -selection clipboard -o'`
+или
+`alias pbcopy='xsel --clipboard --input'`
+`alias pbpaste='xsel --clipboard --output'`
+
+ls -al | pbcopy
+```
 ##### ==Размер==
 Размер каталогов в отсортированом виде:
 ```
