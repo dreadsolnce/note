@@ -46,6 +46,27 @@ sudo nginx -s reload
 ![[Screenshot 2025-06-03 144859.png]]
 В этом примере, первый блок сервера обрабатывает запросы к домену `example.com`. 
 Второй блок сервера с `server_name _` будет обрабатывать любые другие запросы, не соответствующие первому
+
+## Выпуск сертификата LetsEnCrypt c помощью certbot
+
+`sudo apt install certbot python3-certbot-nginx
+
+`sudo certbot certonly -d kvlpro.ru -d www.kvlpro.ru
+
+![[Снимок экрана от 2025-06-05 11-46-14.png]]
+
+Добавляем сертификаты в конфигурационный файл сайта:
+
+![[Снимок экрана от 2025-06-05 12-02-10.png]]
+
+Создать снипет конфигурационный файл отвечающий за общие настройки ssl
+
+`sudo vim /etc/nginx/snippets/ssl-params.conf
+![[ssl_params.conf]]
+
+
+
+
 ## Описание параметров
 
 #### 1. Переход в другой location

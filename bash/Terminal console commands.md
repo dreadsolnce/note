@@ -177,6 +177,11 @@ usermod -aG kvl kvl
 passwd kvl
 ```
 
+Создание системного пользователя:
+```
+useradd -s /usr/sbin/nologin -U -M -r proxyuser
+```
+
 ##### ==Терминал==
 
 <h4>Не добивает команды с помощью клавиши TAB</h4>
