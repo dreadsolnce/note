@@ -181,6 +181,9 @@ passwd kvl
 ```
 useradd -s /usr/sbin/nologin -U -M -r proxyuser
 ```
+-r, --system                  create a system account
+-U, --user-group              create a group with the same name as the user
+-M, --no-create-home          do not create the user's home directory
 
 ##### ==Терминал==
 
