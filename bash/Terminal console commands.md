@@ -185,6 +185,21 @@ useradd -s /usr/sbin/nologin -U -M -r proxyuser
 -U, --user-group              create a group with the same name as the user
 -M, --no-create-home          do not create the user's home directory
 
+***Работа с разрешениями на папки для пользователей (например для nginx):***
+Задаем владельца каталогов и находящихся внутри файлов:
+```
+chown -R webuser:webuser /home/webuser/www/
+```
+
+```
+chown -R webuser:webuser /home/webuser/tmp/
+```
+
+Добавляем пользователя www-data в группу webuser:
+```
+usermod -aG webuser www-data
+```
+
 ##### ==Терминал==
 
 <h4>Не добивает команды с помощью клавиши TAB</h4>

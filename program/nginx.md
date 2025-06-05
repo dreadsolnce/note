@@ -64,8 +64,39 @@ sudo nginx -s reload
 `sudo vim /etc/nginx/snippets/ssl-params.conf
 ![[ssl_params.conf]]
 
+Настройка задачи по обновлению сертификата:
+
+`sudo crontab -e
+
++++ @daily certbot renew
+## Настройка из под пользователя:
+***Работа с разрешениями на папки для пользователей (например для nginx):***
+
+Создадим непривилегированного пользователя, в нашем случае webuser:
+```
+adduser webuser
+```
+Появится интерактивный диалог, в ходе которого необходимо будет задать пароль (New password), подтвердить его (Retype new password), остальные пункты можно не заполнять, просто нажимая ENTER. В последнем вопросе Is the information correct? [Y/n] необходимо нажать Y и нажать ENTER.
+
+Добавляем пользователя webuser в группу sudo для повышения привилегий:
+```
+usermod -aG sudo webuser
+```
 
 
+Задаем владельца каталогов и находящихся внутри файлов:
+```
+chown -R webuser:webuser /home/webuser/www/
+```
+
+```
+chown -R webuser:webuser /home/webuser/tmp/
+```
+
+Добавляем пользователя www-data в группу webuser:
+```
+usermod -aG webuser www-data
+```
 
 ## Описание параметров
 
