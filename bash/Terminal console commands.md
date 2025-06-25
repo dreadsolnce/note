@@ -23,6 +23,9 @@
 | command -v ufw                                               | *Поиск расположения команды по названию :*                                 |                                                             |
 | type <имя команды>                                           |                                                                            |                                                             |
 | whereis <имя команды>                                        |                                                                            |                                                             |
+| which <имя команды>                                          |                                                                            |                                                             |
+| whatis <команда>                                             | *Информация по команде*                                                    |                                                             |
+| dpkg -S <команда>                                            | *Какому пакету принадлежит команда*                                        |                                                             |
 | mkisofs -o file.iso \<path to add iso\>                      | *Создание iso файла*                                                       |                                                             |
 | kill -s QUIT 4716                                            | *Мягкое завершение процесса*                                               |                                                             |
 | kill -s SIGKILL 4716                                         | *Жёсткое закрытие процесса*                                                |                                                             |
@@ -143,9 +146,34 @@ curl -O https://testdomain.com/testfile.tar.gz
 ```
 
 ```
+# Скачать файл
+curl https://testdomain.com/testfile.tar.gz > name_file.gz
+```
+
+```
+# Скачать файл с добавочным заголвком (т.е. сервер вернёт файл в архивированном виде)
+curl -H 'Accept-Encoding: gzip,deflare' https://testdomain.com/testfile.tar.gz > name_file.gz
+```
+
+![[Снимок экрана от 2025-06-17 15-03-55.png]]
+
+```
 # Посмотреть, какие заголовки отдает сервер
 curl -I https:/google.com
 ```
+
+```
+# Посмотреть, какие заголовки отдает сервер, при запросе с добавленным в ручну заголовком
+curl -I -H 'Accept-Encoding: gzip,deflare' https:/google.com
+```
+
+![[Снимок экрана от 2025-06-17 14-38-46.png]]
+
+```
+# Отправка запроса с query параметрами и выводов всех заголовков
+curl http://127.0.0.1:8080/response-headers\?test\=test\&server\=httpbin -H "Host: new.httpbin.local" -v
+```
+![[Снимок экрана от 2025-06-25 16-24-13.png]]
 
 ```
 # Подключится к прокси серверу
@@ -289,6 +317,22 @@ type <имя команды>
 ```
 whereis <имя команды>
 ```
+```
+which <имя команды>
+```
+
+*Информация по команде:*
+```
+whatis <имя команды>
+```
+
+*Поиск пакета которому принадлежит команда:*
+```
+whereis column
+apt-file search column | grep /usr/bin/column
+```
+
+
 ##### ***==Системные команды==***
 *Изменение имени хоста:*
 ```
@@ -458,6 +502,11 @@ sudo systemctl show commvault.service
 wc -l 
 ```
 
+***Количество файлов в директории:***
+```
+find Документы/ -type f -exec ls {} \; | wc -l
+```
+
 ***Размер файлов через команду ls***
 ```
 ls -lh data/
@@ -553,6 +602,14 @@ sudo apt-get install --reinstall packet
 ```
 sudo apt install --reinstall zabbix-agent2=1:6.0.2-1+ubuntu20.04
 ```
+
+Добавить только архитектуру amd64:
+
+```
+sudo vim /etc/apt/sources.list.d/zabbix.conf
+deb [arch=amd64] https://repo.zabbix.com/zabbix/6.0/ubuntu noble main
+```
+
 ##### ==ssh==
 Создание ключ:
 ```
