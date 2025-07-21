@@ -51,6 +51,10 @@ touch passwd
 htpasswd /etc/squid/passwd kvl
 ```
 
+<h4>Настройка https</h4>
+sudo apt install squid-openssl
+
+
 <h4>Настройка безопасности</h4>
 <h5>Установка opendns:</h5>
 www.opendns.com
@@ -68,5 +72,11 @@ www.opendns.com
 
 ```
 curl -sSL https://install.pi-hole.net | bash
+```
+
+Удаление pi-hole:
+
+```
+sudo pihole uninstall
 ```
 

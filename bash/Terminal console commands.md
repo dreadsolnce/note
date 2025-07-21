@@ -456,6 +456,11 @@ cat /proc/meminfo
 cat /proc/loadavg
 ```
 ##### ***==Службы==***
+Время загрузки ОС (каждой службы)
+```
+systemd-analyze blame
+```
+
 *Статус службы (активна/неактивна):*
 ```
 systemctl is-active nftables.service 
@@ -507,6 +512,16 @@ wc -l
 find Документы/ -type f -exec ls {} \; | wc -l
 ```
 
+**Вывод файлов начинающихся с file и заканчивающиеся на .txt**
+```
+for file in file*.txt; do echo "$file"; done
+```
+
+***Вывод файлов заканчивающиеся на .log***
+```
+for f in *.log; do echo $f;done
+```
+
 ***Размер файлов через команду ls***
 ```
 ls -lh data/
@@ -556,6 +571,16 @@ find . \( -name "*-1[^5].*" -o -name "*-[023]?.*" \) | sort
 > 	pgsql_2025-05-21.sql.gz
 > 	...
 > 	pgsql_2025-05-31.sql.gz
+
+***Поиск только внутри каталога без подпапок***
+```
+find /home/kvl/ -maxdepth 1 -type f -name "*.txt"
+```
+
+***Вывести файлы содержащие ключевое слово поиска test***
+```
+grep -l "test" `find /home/kvl/ -maxdepth 1 -type f -name "*.txt"`
+```
 
 ***Удалить все файлы старше 61 дня (но не удалять файлы созданные 15 числа)***
 ```

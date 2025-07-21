@@ -329,12 +329,6 @@ git branch -m block-news
 > git branch -D block-news
 > ```
  
-
-
-
-
-
-
 #### Урок 8 Ветки на сервере
 
 Просмотр удалённых веток

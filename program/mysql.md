@@ -15,7 +15,7 @@
 `sudo -u root mysql
 
 **Просмотр пользователей:**
-SELECT host, user, password, password_expired FROM mysql.user;
+SELECT host, user, password_last_changed, password_expired FROM mysql.user;
 
 **Создание базы данных:**
 `CREATE SCHEMA animals;
@@ -24,7 +24,7 @@ SELECT host, user, password, password_expired FROM mysql.user;
 **Просмотр баз данных:**
 `SHOW DATABASES;
 
-**Создание пользователя:**
+**Создание пользователя c паролем secret:**
 `CREATE USER 'test'@'localhost' IDENTIFIED BY 'secret';
 `FLUSH PRIVILEGES;
 
@@ -36,6 +36,9 @@ SELECT host, user, password, password_expired FROM mysql.user;
 
 **Оптимизированный вывод:**
 `SELECT host, user, password_expired FROM mysql.user\G;
+
+**Задать пароль wordpress пользователю wordpress:**
+ALTER USER 'wordpress'@'localhost' IDENTIFIED BY 'wordpress';
 
 **Просмотр плагина валидации пароля:**
 `SHOW GLOBAL VARIABLES LIKE 'validate_password%';

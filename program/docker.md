@@ -45,8 +45,6 @@ docker run hello-world
 docker system df
 ```
 
-# dockerfile
-
 ***Создание образа (images):***
 
 ```
@@ -85,6 +83,55 @@ docker rm <имя контейнера>
 ```
 docker rm test_site
 ```
+
+***Получить информацию об объектах (image, volum, network...):***
+
+docker image inspect <имя объекта>
+
+```
+docker image inspect 9a9a9fd723f1
+docker volume inspect data
+и т.д.
+```
+
+***Создать коммит контейнера (сделать свой контейнер) не рекомендуется:***
+
+docker commit <id контейнера> <новое имя контейнера>
+
+```
+docker exec -it nginx bash
+--> `сделать изменения`
+exit
+
+docker commit 05d0a393198e nginx:myimage
+```
+# dockerfile
+
+***Создание своего образа:***
+
+1. Создаём docker файл:
+
+```
+vim Dockerfile
+```
+
+2. Добавляем инструкции:
+
+FROM nginx
+
+RUN touch /123.txt
+
+COPY index.html /usr/share/nginx/html/index.html
+
+3. CСобираем (создаём) свой образ:
+
+```
+docker build -t nginx:mynginx .
+```
+
+4. Пушим наш образ в docker hub для дальнейшего его использования:
+
+
 ##### Примеры:
 №1 dockerfile php-apache
 ```
