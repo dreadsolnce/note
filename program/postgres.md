@@ -74,7 +74,7 @@ exit
 
 <h1>Входим под учётной записью пользователя dbtest в базу данных dbtest:</h1>
 ```
-psql -U dbtest -h 127.0.0.1 -p 5432
+exit
 \conninfo
 \q
 ```
@@ -144,7 +144,7 @@ pg_dump -h localhost -U test test > test_$(date +%d-%m-%y).tar.gzip
 	SELECT \* FROM pg_user;                        - просмотр пользователей (более подробная информация)
 	DROP TABLE dbtable;                           - удаление таблицы
 	DROP DATABASE IF EXISTS < Имя базы данных >;  - удаление базы данных
-	DROP USER < Имя пользователя БД >             - удаление пользователя базы данных
+	DROP USER IF EXISTS < Имя пользователя БД >;  - удаление пользователя базы данных
 	SELECT * FROM dbtable;                        - просмотр содержимого таблицы 
 	CREATE TABLE dbtable;                         - создание таблицы
 

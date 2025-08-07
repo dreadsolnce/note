@@ -6,6 +6,29 @@ sudo touch /etc/fail2ban/jail.local
 sudo systemctl enable fail2ban
 ```
 
+### Разблокировать ip адрес
+
+1. ***Смотрим кто заблокирован и по каким правилам:***
+
+`fail2ban-client status`
+
+*пример результата вывода этой команды:*
+
+Status
+|- Number of jail:      2
+`- Jail list:   nginx-limit-req, sshd
+
+*видно, что в клетке 2 адреса и правило блокировки «nginx-limit-req».*
+
+2. ***Смотрим какие это IP адреса:***
+
+`fail2ban-client status sshd
+
+3. ***Разблокируем один, например: 188.255.123.193:***
+
+```
+fail2ban-client set sshd unbanip 188.255.123.193
+```
 ### Специальная настройка для протокола ssh
 
 ```

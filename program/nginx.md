@@ -326,9 +326,9 @@ chown -R webuser:webuser /home/webuser/tmp/
 usermod -aG webuser www-data
 ```
 
-## Описание параметров
+## Настройки для сайтов
 
-#### 1. Переход в другой location
+##### 1. Переход в другой location
 
 ##### 1.1 Перенаправление в другой блок выполняется за счет одной из приведенных ниже директив:
 
@@ -399,7 +399,7 @@ usermod -aG webuser www-data
 - Если вы используете директиву `permanent`, убедитесь, что перенаправление действительно нужно, так как это постоянное изменение, которое браузер кэширует. Для временных перенаправлений используйте `redirect` (код 302).
 - Регулярные выражения в `rewrite` могут быть сложными. Начните с простых примеров и постепенно усложняйте их, если это необходимо.
 - Существуют разные варианты использования `rewrite`, в зависимости от конкретной задачи. Например, можно перенаправлять запросы на разные серверы или изменять URL для обработки на бэкенде. Более подробную информацию можно найти в документации Nginx.
-#### 2. Отключение кэширования
+##### 2. Отключение кэширования
 
 ```ruby
 add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
@@ -410,7 +410,7 @@ add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate,
 **must-revalidate** - означает только, что устаревший кэшированный документ должен быть повторно проверен исходным сервером.
 **proxy-revalidate** - аналогично must-revalidate, за исключением того, что применяется только к кэшам прокси.
 
-#### 3. Кэширование статических файлов
+##### 3. Кэширование статических файлов
 
 ```
 # assets, media
@@ -429,7 +429,7 @@ location ~* \.(?:svgz?|ttf|ttc|otf|eot|woff2?)$ {
 ```
 > Обратите внимание на то, что nginx не отдает заголовки Expires. Если для сгенерированных интерпретатором PHP документов это не всегда важно, то статические данные желательно отдавать с подобным заголовком, позволяя броузерам посетителей более активно использовать кэширование. В данном конфигурационном блоке есть раздел location для обработки статических докуменов. Именно в этом блоке добавьте строку expires Xd, где Х — количество дней валидности данных. Например, expires 7d укажет броузеру, что изображения и файлы CSS/JS можно кэшировать на протяжении недели.
 
-пример с моего сервера:
+***пример с моего сервера:***
 ```
 location ~* \.(jpg|jpeg|gif|ico)$ {
                 access_log off;
@@ -446,14 +446,24 @@ location ~* \.(jpg|jpeg|gif|ico)$ {
         }
 ```
 
-#### 4. Настройка php-fpm
+##### 4. Блокировка скрытых файлов
+```
+location ~ /\. {
+                deny all;
+                return 403;
+        }
+```
+> Запретить доступ к скрытым файлам
+
+![[Снимок экрана от 2025-07-24 18-19-40.png]]
+##### 5. Настройка php-fpm
 
 Установка php-fpm [Статья](https://losst.pro/ustanovka-nginx-i-php-fpm-v-ubuntu-20-04)
 
 ![[Снимок экрана от 2025-04-11 11-54-24.png]]
 > Все файлы в запросе (http://localhost/api.php) оканчивающиеся на .php будут запускаться (выполняться), а не загружаться.
 
-#### 5. Пропуск favicon.ico
+##### 6. Пропуск favicon.ico
 
 ```python
 # skip favicon.ico
@@ -741,6 +751,48 @@ wrk -t4 -c768 -d30s --latency https://kvlpro.ru
 [access_log](https://nginx.org/en/docs/http/ngx_http_log_module.html?&_ga=2.268790840.856361071.1749565721-1137248912.1749565721#access_log)
 
 
+
+## Проверка сертификатов:
+
+**For RSA Keys**
+
+Для проверки связи между закрытым ключом, CSR, цепочкой сертификатов и листом сертификата с помощью md5. 
+Извлеките модуль из ключей и передайте его в openssl md5. Если md5 совпадает, то связь успешно проверена.
+
+```bash
+# Private Key
+openssl rsa -noout -modulus -in rsa-domain-private.key | openssl md5
+
+# CSR 
+openssl req -noout -modulus -in rsa-certificate-signing-request-for-certificate-authority.csr | openssl md5
+
+# Certificate from CA (Certificate Chain or Leaf Certificate, both will give same result)
+openssl x509 -noout -modulus -in certificate-chain.crt | openssl md5
+```
+
+**For ECDSA Keys**
+
+Для проверки связи между закрытым ключом, CSR, цепочкой сертификатов и листом сертификата с помощью md5. 
+Извлеките открытый ключ из любого из ключей и передайте его в openssl md5. Если md5 совпадает, связь успешно проверена.
+
+```bash
+# Private Key
+openssl ec -in ecdsa-domain-private.key -pubout | openssl md5
+
+# CSR 
+openssl req -in ecdsa-certificate-signing-request-for-certificate-authority.csr -noout -pubkey | openssl md5
+
+# Certificate from CA (Certificate Chain or Leaf Certificate, both will give same result)
+openssl x509 -in certificate-chain.crt -pubkey -noout | openssl md5
+```
+
+Пример вывода будет выглядеть так:
+
+```bash
+MD5(stdin)= 93739e80546792e8be2a61803467b7665c
+MD5(stdin)= 93739e80546792e8be2a61803467b7665c
+MD5(stdin)= 93739e80546792e8be2a61803467b7665c
+```
 ## Примеры 
 
 - #### Одновременный запуск http и https

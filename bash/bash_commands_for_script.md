@@ -36,4 +36,7 @@ if [ "$num1" -ne "num2" ] || [ "$num1" -eq "$num2" ]; then
 `if docker images | grep -iP ^composer >/dev/null; then`
 > если команда выполнена успешно
 
+  ***ОТРИЦАНИЕ УСЛОВИЯ***
+`if [ ! -d "dev.kvlpro.ru" ]; then echo "Нет директории!"; fi`
+> ! : условие наоборот
 

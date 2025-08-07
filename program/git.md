@@ -316,7 +316,7 @@ git branch -v
 git checkout nes
 git branch -m block-news
 ```
- <b>Удаление</b> ветки:
+ <b>Удаление</b> локальной ветки:
 
 > [!important] замечание
 > Для удаления ветки из нее сначала выйти (переключиться на другую)
@@ -328,7 +328,13 @@ git branch -m block-news
 > ```
 > git branch -D block-news
 > ```
- 
+
+**Удаление удалённой ветки в локальном репозитории:
+
+```
+git branch -r origin-gitlab-localhost/production --delete
+```
+
 #### Урок 8 Ветки на сервере
 
 Просмотр удалённых веток

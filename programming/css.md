@@ -1,12 +1,14 @@
 <h5>background-color : #AFEEEE;</h5>
 <div class="text1"> - цвет фона</div>
-<h5>border : 2px solid #F4A460;</h5>
 <div class="text1"> - толщина линии</div>
+
 <div><b>solid</b> : тип линии</div>
 <h5>color : #008080;</h5>
 <div class="text1">- цвет шрифта</div>
 <h5>font-size: 20pt;</h5>
 <div class="text1">- размер шрифта шрифта</div>
+<h5>font-weight: 600;</h5>
+<div class="text1"> - жирность шрифта</div>
 <h5>font-family: Courier New, monospace;</h5>
 <div class=text1> - тип шрифта</div>
 <h5>text-align: center; justify;</h5>
@@ -66,7 +68,7 @@ h1 {
 	font-weight: 600;                         /* жирность шрифта \*/
 	font-size: 60px;  
 	margin-top:0;  
-	margin-bottom:80px;
+	margin-bottom:80px;                       /* внешний отступ снизу \*/
 }
 
 p {
@@ -79,6 +81,10 @@ a {
 	text-decoration: none;                   /* убираем подчеркивание у ссылки \*/
 	text-align: center;
 	display: block;         
+}
+
+a:hover {
+	background-color: red;                   /* изменение цвета при наведении указателя мыши \*/ 
 }
 
 body {
@@ -121,7 +127,7 @@ b {
     font-size: 46px;  
     font-weight: 600;                    /* жирность шрифта \*/
     line-height: 54px;                   /* высота строки \*/
-    margin: 0;  
+    margin: 0;                           /* отключить внешние отступы \*/
 }  
   
 .form-field {  
