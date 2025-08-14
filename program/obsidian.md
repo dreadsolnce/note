@@ -1,3 +1,4 @@
+####Настройка
 ##### Подключение своего css файла
 
 - Скопировать свой css файл в /home/kvl/obsidian/.obsidian/snippets
