@@ -47,6 +47,10 @@
 <h5>border-radius: 15px;</h5>
 <div class=text1> - скругление углов</div>
 <img src="Снимок экрана от 2025-05-05 12-53-58.png">
+
+<h5>box-sizing: border-box;</h5>
+<div class="text1">Для этих элементов рамки будут находиться внутри элемента, а не снаружи как при обычном border</div>
+
 <h5>a:hover {}</h5>
 <div class=text1> - изменение цвета при наведении указателя мыши</div>
 <img src="Снимок экрана от 2025-05-05 18-05-21.png" width="94px">
@@ -120,7 +124,8 @@ b {
     border-radius: 20px;  
     padding: 37px 50px 30px 50px;  
     display: flex;  
-    justify-content: space-between;  
+    justify-content: space-between; 
+    box-sizing: border-box;              /*Для этих элементов рамки будут находиться внутри элемента, а не снаружи как при обычном border*/
 }
 
 .subtitle {  
