@@ -747,25 +747,8 @@ intelion.cloud
 
 Турбо
 
-### Лего-мир / аниме / киберпанк за окном? Почему бы и нет?
+#### 
 
-
-
-](https://effect.habr.com/a/QyJnX2yH2BNtG14mEwQ_dzzX_8tqQuCoo1gz_YoygVsoeUTZ1CPXPcbCGDBzNdCTZJzAVtmpA98XXXL2zZDx7zLRhMUKq_36Er9Lmz_jYZTFWosi0CXCjpK2zTDxDm0jXcyPSFwyKjdpYA)
-
-## Ближайшие события
-
-[![](https://habrastorage.org/r/w390/getpro/habr/upload_files/55f/f44/0d3/55ff440d3ce3caeffc9a3c885594c64f.png)](https://habr.com/ru/events/758/)
-
-15 августа
-
-[BigData MeetUp от 43Tech](https://habr.com/ru/events/758/)
-
-Санкт-Петербург • Онлайн
-
-[Больше событий в календаре](https://habr.com/ru/events/#758)
-
-Разработка
 
 [![](https://habrastorage.org/r/w390/getpro/habr/upload_files/9c4/739/ca2/9c4739ca23615541ee739a29706eb1cd.jpg)]
 ##### Подключение своего css файла
