@@ -723,34 +723,8 @@ intelion.cloud
 
 Турбо
 
-### IT-пинбол: цех стоит, кот грустит, все играют
 
-
-
-](https://effect.habr.com/a/pbpgahdrBNcxp9FU-BDrMEkephqEQh4WJOKfRFY_JMLDD6nSvrk2DTxqW9-SeueiScx7hotiN8RtaXJn_zDd-0rlBtNdIzFzm-qEUEeIkICHNB8ttSdCC96vBOjR-dNd7-EjwOlT-g)
-
-[
-
-![](https://effect.habr.com/a/8IS5j5h0-U7Hjp4iJukzmYU_fkdjHIGXdbmlbqQ0E_JQo8nWVCUjc6BRZogbDYJGAGJvXxYluxB910AqLWgE6-2e7w-FCdklVWeArAmzcO-Fwfkwp-9wvvduCBVVqbYQWrmagnWc_yY2bq05cvDgciK1TIf8f0JeEvqWFye5O5za2BsWI-L9qPmjBU_s9FvV08phh26J308zH5s4C36Do1Y7TfjeOl2gaghF-H6AARx4)
-
-Событие
-
-### Что ни день – то ивент, если следить за Календарём
-
-
-
-](https://effect.habr.com/a/ajIarwQnezlvXdDTmeTUBKq_SUNktihEDUCC2CcuKqOO1cQa9edWTCYyTVi8UlpnMKxyTf7NcGEpi6_bxLwFXu8RccVVv7EQ8XcCMgKMyujOKrhk769LtZcItOl19x7y)
-
-[
-
-![](https://effect.habr.com/a/E1LImF4fJgcZkOqdOXwZKiSsBqtjSIFtZHFXNzqWoDjNmbefrT4XmEpBk_VmjEGiOYLwvmQQKk7nACGWduiE4VYPwbL8A_O4iICNht6r8VYux-wfsBzihRaY4dsBAltZpDBW41nDBDknq_xHVyhu3-e8XQmLCTWXZJ4xosS-6k9EVuYv-DSCBXfR0ECdJjcHdczddHYGOgdxzkjNofSI)
-
-Турбо
-
-#### 
-
-
-[![](https://habrastorage.org/r/w390/getpro/habr/upload_files/9c4/739/ca2/9c4739ca23615541ee739a29706eb1cd.jpg)]
+[![](https://habrastorage.org/r/w390/getpro/habr/upload_files/9c4/739/ca2/9c4739ca23615541ee739a29706eb1cd.jpg)
 ##### Подключение своего css файла
 
 - Скопировать свой css файл в /home/kvl/obsidian/.obsidian/snippets
