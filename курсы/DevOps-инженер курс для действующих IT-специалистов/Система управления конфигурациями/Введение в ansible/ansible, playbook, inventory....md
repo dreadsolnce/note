@@ -30,6 +30,8 @@ Facts
 
 `ansible hostname -m setup`
 
+Facts хранятся в переменной ansible_facts
 
+gather_facts
 
 
