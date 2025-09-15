@@ -24,6 +24,8 @@
 
 `ansible-inventory -i inventory/hosts.yml --host centos8`
 
+Facts
+
 
 
 
