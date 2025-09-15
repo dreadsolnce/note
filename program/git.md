@@ -473,6 +473,8 @@ git push -f origin main
 
 [см. рисунок](https://habrastorage.org/r/w1560/getpro/habr/upload_files/bce/e82/ac9/bcee82ac94f9fde7344dfd29d058a98e.png)
 
+Добавить новый удалённый репозиторий:
+git remote add origin https://ghp_@github.com/dreadsolnce/note.git
 ### Инициализация (создание) нового репозитория
 
 1. В директории проекта выполнить команду:

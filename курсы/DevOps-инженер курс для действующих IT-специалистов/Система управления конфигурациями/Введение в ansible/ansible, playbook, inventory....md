@@ -10,9 +10,9 @@
 
 `ansible-playbook -i inventory/hosts.yml site.yml`
 
-Работа с inventory файлом:
+### Работа с inventory файлом:
 
-Просмотр груп и хостов в inventory файле:
+Просмотр групп и хостов в inventory файле:
 
 `ansible-inventory -i inventory/hosts.yml --graph`
 
