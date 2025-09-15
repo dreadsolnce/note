@@ -24,7 +24,7 @@
 
 `ansible-inventory -i inventory/hosts.yml --host centos8`
 
-Facts
+### Facts
 
 Получить facts с хоста:
 
@@ -32,6 +32,8 @@ Facts
 
 Facts хранятся в переменной ansible_facts
 
-gather_facts
+Выключить сбор facts:
+
+gather_facts: false
 
 
