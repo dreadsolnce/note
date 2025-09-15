@@ -26,7 +26,9 @@
 
 Facts
 
+Получить facts с хоста:
 
+`ansible hostname -m setup`
 
 
 
