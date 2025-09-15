@@ -50,3 +50,97 @@ resolvectl status
 ls /etc/netplan/00-installer-config.yaml
 ```
 
+***Изменение конфигурации ip dns сервера:***
+
+```
+sudo systemctl status systemd-resolved.service
+```
+
+```
+cd /etc/netplan
+```
+
+```
+sudo cp 00-installer-config.yaml 00-installer-config.yaml.original
+```
+
+```
+dig @172.16.126.15 dev.border-patrol.ru
+```
+
+```
+sudo vim 00-installer-config.yaml
+```
+
+*Проверить корректность конфигурационного файла Netplan для синтаксической проверки*
+```
+sudo netplan generate
+```
+
+*Для предварительного применения конфигурации и проверки её работоспособности в течение 120 секунд, после чего конфигурация будет отменена или подтверждена*
+
+```
+sudo netplan try
+```
+
+*или сразу применить новую конфигурацию:*
+
+```
+sudo netplan apply
+```
+
+*Очистить кэш dns записей:*
+
+```
+sudo systemd-resolve --flush-caches
+sudo systemctl restart systemd-resolved.service
+```
+
+*Проверка применения новых dns серверов:*
+
+```
+sudo systemd-resolve --status
+```
+
+```
+resolvctl status
+```
+
+```
+nslookup 172.16.3.204
+```
+
+## Настройки CentOS:
+
+*Конфигурационный файл:*
+
+```
+sudo cat /etc/sysconfig/network-scripts/ifcfg-ens192
+```
+
+```
+sudo systemctl status systemd-resolved.service
+```
+
+*Текущий сервер dns:*
+
+```
+nslookup 172.16.3.204
+```
+
+```
+dig dev.border-patrol.ru
+```
+
+```
+ip addr show
+```
+
+```
+nmcli connection show ens192
+```
+
+```
+sudo systemctl restart NetworkManager.service
+```
+

@@ -173,6 +173,11 @@ curl -I https:/google.com
 ```
 
 ```
+# Запрос с добавлением имени сайта
+curl -H "Host: example.com" https://your-domain.com/path
+```
+
+```
 # Посмотреть, какие заголовки отдает сервер, при запросе с добавленным в ручну заголовком
 curl -I -H 'Accept-Encoding: gzip,deflare' https:/google.com
 ```
@@ -691,7 +696,11 @@ ssh-keygen -t rsa
 ssh-copy-id -i <путь для ключа *.pub> <user>@<remote ip>
 ```
 
+Проксирование трафика:
 
+```
+ssh -J ubuntu@<открытый ip> ubuntu-test@<ip сервера где то внутри локальной сети>
+```
 ##### **==Переменные окружения==**
 Вывести все переменные окружения
 ```

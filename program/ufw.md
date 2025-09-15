@@ -105,5 +105,40 @@ sudo ufw status numbered
 sudo ufw delete 2
 ```
 
+*Вывести все текущие правила*
+
+```
+sudo ufw status verbose
+```
+
+*Все профили создаются вручную. Посмотреть созданные профили можно следующим образом:*
+
+```
+sudo ufw app list
+```
+
+*Разрешить доступ к программе (профилю):*
+
+```
+sudo ufw allow ZabbixAgent2
+```
+
+*Разрешить доступ к программе (профилю) для конкретного ip:*
+
+```
+sudo ufw allow from 172.16.126.9 to any app 'ZabbixAgent2'
+```
+
+***Готовый пример:***
+
+```
+ufw allow from 172.16.114.104/32 to any app 'OpenSSH'
+ufw allow from 172.16.114.104/32 to any app 'ZabbixAgent2'
+ufw allow out from any to 0.0.0.0/0 port 123 proto udp
+ufw allow out from any to 172.16.118.3/32 app 'DNS'
+ufw allow out from any to 172.16.118.4/32 app 'DNS'
+```
 
 [Ссылка №1 на статью](https://selectel.ru/blog/tutorials/how-to-configure-firewall-with-ufw-on-ubuntu-20/)
+
+[Открытие портов по названию программ](https://1cloud.ru/help/security/ispolzovanie-utility-ufw-na-inux)
