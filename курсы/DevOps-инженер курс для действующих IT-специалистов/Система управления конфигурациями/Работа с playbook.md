@@ -10,3 +10,4 @@
 
 `ansible-playbook -i inventory/prod.yml site --step`
 
+Запуск playbook-а  с выводом дополнительной диагностической информаций (всего 6 уровней {})
