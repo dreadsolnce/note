@@ -1,3 +1,10 @@
+
+##### Подключение к удалённой машине через другую машину
+
+```
+ssh -J kolchinvl@172.16.126.9 kolchinvl@172.16.126.15
+```
+
 ##### Копирование ключа на удалённый host:
 
 ssh-copy-id -i /home/kvl/.ssh/id_rsa.pub administrator@ai-back1p
