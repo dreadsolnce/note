@@ -4,6 +4,48 @@
 
 `pip3 install ansible --user`
 
+Через переменные окружения python:
+
+`python3 -m venv .venv`
+
+Создание окружения python определенной версии:
+
+curl https://pyenv.run | bash
+
+```
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+```
+
+```
+source ~/.bashrc
+```
+
+Просмотр доступных версий python:
+
+``pyenv install --list``
+
+Перейти в каталог проекта и установить для проекта нужную версию:
+
+``pyenv install 3.7.0``
+
+`pyenv local pypy3.7.0`
+
+`pyenv versions`
+
+Создаем окружение:
+
+`python3.7 -m venv .venv`
+
+`source .venv/bin/activate`
+
+`pip install --upgrade pip`
+
+`pip3.7 install ansible --user`
+
+`deactivate`
+
 ***Запуск***
 
 Запуск простейшего модуля:

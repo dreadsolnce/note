@@ -1,0 +1,1 @@
+статья по настройке: https://losst.pro/nastrojka-apparmor-v-ubuntu-16-04
