@@ -8,5 +8,5 @@
 
 Запуск playbook-а в интерактивном режиме (будет спрашивать подтверждение выполнения каждой таски):
 
-`ansible-playbook -i inventory/prod.yml site - -step`
+`ansible-playbook -i inventory/prod.yml site --step`
 
