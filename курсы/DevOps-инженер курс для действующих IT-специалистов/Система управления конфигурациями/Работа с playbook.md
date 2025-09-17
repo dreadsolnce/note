@@ -14,4 +14,5 @@
 
 `ansible-playbook -i inventory/prod.yml site.yml -v`
 
-Запуск playbook-а с выводом какие изменения в файлах происходят (аналог diff в github)
+Запуск playbook-а с выводом какие изменения в файлах происходят (аналог diff в github-е). Полезно использовать с ключом :
+
