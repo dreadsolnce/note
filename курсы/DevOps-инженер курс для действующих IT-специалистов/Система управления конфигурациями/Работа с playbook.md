@@ -6,3 +6,5 @@
 
 `ansible-playbook -I inventory/prod.yml site.yml --start-at-task`
 
+Запуск playbook-а в интерактивном режиме
+
