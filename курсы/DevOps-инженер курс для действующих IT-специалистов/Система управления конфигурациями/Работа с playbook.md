@@ -4,4 +4,5 @@
 
 Старт (начало) выполнения playbook-а с определенной точки:
 
-`ansible-playbook -I inventory/prod.yml site.yml --star-`
+`ansible-playbook -I inventory/prod.yml site.yml --start-at-task`
+
