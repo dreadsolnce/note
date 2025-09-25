@@ -17,3 +17,9 @@
 Запуск playbook-а с выводом какие изменения в файлах происходят (аналог diff в github-е). Полезно использовать с ключом check:
 
 `ansible-playbook -i inventory/prod.yml site.yml --diff --check`
+
+Запуск playbook-а для определенной группы:
+
+```
+ansible-playbook -l dev -i inventory/prod.yml site.yml --diff --check
+```

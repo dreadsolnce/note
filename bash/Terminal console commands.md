@@ -456,6 +456,12 @@ journalctl -u pm2-root
 > -n : количество 
 > -u : имя службы
 
+Просмотр ошибок:
+
+```
+sudo journalctl -xeu redis.service
+```
+
 Уменьшить максимальный размер журнала:
 
 ```
@@ -499,6 +505,16 @@ systemd-analyze blame
 ```
 systemctl is-active nftables.service 
 ```
+
+Служба в которой в конце стоит знак @
+```
+systemctl status redis@.service
+```
+означает, что она должна запускаться с параметром который будет подставлять вместо %i в тексте самой службы:
+```
+systemctl status redis@redis-server.service
+```
+
 
 *Состояние всех сервисов:*
 ```
