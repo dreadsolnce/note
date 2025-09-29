@@ -157,7 +157,7 @@ SELECT datname FROM pg_database WHERE has_database_privilege('имя_польз�
 
 ***Проверка подключения к базе данных:***
 ```
-psql -h 127.0.0.1 -p 5432 -U dbtest -d dbtest
+psql -h 127.0.0.1 -p 5432 -Udbtest -d dbtest
 ```
 
 ***Задать пароль пользователю:***
