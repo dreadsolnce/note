@@ -28,15 +28,55 @@ source ~/.bashrc
 
 Перейти в каталог проекта и установить для проекта нужную версию:
 
+```python
+sudo apt-get install libssl-dev 
+```
+
+```python
+sudo apt-get install liblzma-dev
+```
+
+```python
+sudo apt-get install python3-tk
+```
+
+```python
+sudo apt-get install libsqlite3-dev
+```
+
+```python
+sudo apt install libreadline-dev
+```
+
+```python
+sudo apt-get install libffi-dev
+```
+
+```python
+sudo apt-get install -y libncurses5-dev libncursesw5-dev
+```
+
+```python
+sudo apt-get install libbz2-dev
+```
+
 ``pyenv install 3.7.0``
 
-`pyenv local pypy3.7.0`
+`pyenv local 3.7.0`
 
 `pyenv versions`
 
 Создаем окружение:
 
-`python3.7 -m venv .venv`
+```
+pip3.9 install --upgrade pip
+```
+
+```
+pip install env
+```
+
+`python3 -m venv .venv`
 
 `source .venv/bin/activate`
 
@@ -71,7 +111,9 @@ source ~/.bashrc
 `ansible-inventory -i inventory/hosts.yml --host centos8`
 
 ***Facts***
+￼￼
 
+ss
 Получить facts с хоста:
 
 `ansible hostname -m setup`

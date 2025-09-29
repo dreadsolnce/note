@@ -18,8 +18,18 @@
 
 `ansible-playbook -i inventory/prod.yml site.yml --diff --check`
 
+<<<<<<< Updated upstream
 Запуск playbook-а для определенной группы:
 
 ```
 ansible-playbook -l dev -i inventory/prod.yml site.yml --diff --check
 ```
+=======
+*Запуск playbook-a по тегу:*
+
+`ansible-playbook -i inventory/prod.yml site.yml --tags "tag1,tag2,tag3" `
+
+*Запуск playbook-а с определенного play:*
+
+`ansible-playbook your_playbook.yml --start-at-play "First Play"`
+>>>>>>> Stashed changes
