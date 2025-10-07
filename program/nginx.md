@@ -113,6 +113,38 @@ keepalive_timeout 30 - соединение с клиентом сохраняе
 
 
 
+
+## Настройка таймаутов
+
+#### fastcgi_read_timeout
+
+> Оптимальное значение для `fastcgi_read_timeout` зависит от времени выполнения ваших скриптов, но обычно рекомендуется устанавливать его в диапазоне ==от 60 секунд до 300 секунд (5 минут) или выше==, если вашему сайту требуется больше времени на обработку запросов. Важно, чтобы это значение было не меньше максимального времени выполнения ваших скриптов, например, параметра `max_execution_time` в PHP, чтобы избежать ошибок 504 Gateway Timeout
+
+
+```
+location ~ \.php$ {
+    # ... другие директивы ...
+    fastcgi_pass unix:/var/run/php/php7.4-fpm.sock; # пример, путь может отличаться
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+
+    # Устанавливаем время ожидания для чтения данных из FastCGI
+    # Здесь 300 секунд = 5 минут
+    fastcgi_connect_timeout 180;
+	fastcgi_send_timeout 180;
+	fastcgi_read_timeout 180;
+
+}
+```
+
+cat /etc/php8/fpm/php.ini
+
+```
+max_execution_time = 180
+```
+
+
+
 ## Переменные:
 
 1. Вывод переменной root:
