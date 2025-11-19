@@ -76,6 +76,12 @@ docker exec -it test_site bash
 docker run --rm test_site:2 cat /usr/local/apache2/conf/httpd.conf > my-httpd.conf
 ```
 
+__Подключиться к контейнеру от пользователя__
+
+```
+docker run -it --user nobody busybox
+```
+
 ***Удалить контейнер:***
 
 docker rm <имя контейнера>
@@ -167,5 +173,25 @@ docker-compose logs -f [service name]
 где [service name] - имя сервиса в dockercompose.yml
 
 ![[Screenshot 2025-02-14 130539.png]]
+
+***Прокинуть docker.sock и задать пользователя***
+
+	В файл compose.yml для конкретного сервиса нужно добавить следующие строки:
+
+```
+ user: telegraf:988
+ volumes:
+    # Mount for telegraf configuration
+    - ./telegraf/:/etc/telegraf/
+    # Mount for Docker API access
+    - /var/run/docker.sock:/var/run/docker.sock:Z
+
+```
+
+	Команды просмотра под каким пользователем работает контейнер:
+
+```
+docker exec sandbox-telegraf-1 ps -ef
+```
 
 [Ссылка на ресурс:](https://habr.com/ru/articles/881882/)

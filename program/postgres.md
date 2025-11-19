@@ -141,7 +141,9 @@ pg_dump -h localhost -U test test > test_$(date +%d-%m-%y).tar.gzip
 	\q        : Выход из терминала
 	\с dbtest : Подключиться к базе dbtest
 	\z public.file : Просмотреть разрешения на таблицу
+	
 	......................................................
+	SELECT version();                             - версия postgres
 	SELECT usename FROM pg_user;                  - просмотр пользователей
 	SELECT \* FROM pg_user;                        - просмотр пользователей (более подробная информация)
 	DROP TABLE dbtable;                           - удаление таблицы

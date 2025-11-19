@@ -306,7 +306,7 @@ return <код> https://$host$request_uri;
 
 `sudo apt install certbot python3-certbot-nginx
 
-`sudo certbot certonly -d kvlpro.ru -d www.kvlpro.ru
+
 
 > [!NOTE] Замечание
 > Перед выпуском сертификата не должно быть директивы ssl_certificate с указанием путей к ключам, а именно блока server

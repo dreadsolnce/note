@@ -4,6 +4,24 @@
 php -m
 ```
 
+***Посмотреть версию установленного с помощью composer модуля:***
+
+```
+./vendor/bin/phpstan --version
+```
+
+***Установка пакета-расширения (например php-rdkafka-stubs)***
+
+В каталоге проекта под пользователем проекта выполнить команду: 
+
+```
+composer require kwn/php-rdkafka-stubs --dev
+```
+
+ После выполнения команды данный пакет появляется в файле composer.json в меню require-dev
+
+![[Снимок экрана от 2025-11-10 18-42-14.png]]
+
 ***Установка пакета (например phpstan - линтер для php) через composer***:
 
 > Отличие установки через composer и просто через скачанный файл с расширением phar, заключается в том, что без Composer вы не сможете установить и использовать расширения PHPStan.
@@ -43,7 +61,7 @@ composer update phpstan/phpstan --with-dependencies
 
 или можно просто командой `./vendor/bin/phpstan`, т.к. она по умолчанию ищет конфигурационный файл в текущей директории phpstan.neon либо phpstan.neon.dist
 
-***Установка пакета (например phpstan - линтер для php) через файл cс расширением phar:***
+***Установка пакета (например phpstan - линтер для php) через файл c расширением phar:***
 
 *Скачиваем архив с программой:*
 
@@ -58,3 +76,25 @@ wget https://github.com/phpstan/phpstan/releases/download/2.1.29/phpstan.phar
 ```
 php phpstan.phar analyse src/Lib/Auth/Controllers/Auth.php -c phpstan.neon.dist
 ```
+
+
+Запуск миграций для back(а):
+
+```
+php vendor/bin/phinx migrate
+```
+
+Очистка кэша:
+```
+php artisan Tools cleanCache
+```
+
+Скрыть отображение версии php:
+
+```
+vim /etc/php8/fpm/php.ini
+```
+
+> `expose_php = Off`
+
+

@@ -1,5 +1,42 @@
-### Установка для UBUNTU 20.04
+__Оглавление__
 
+1. [[#Установка на Astra Linux 1.8 Воронеж]]
+2. [[#Установка на Ubuntu 20.04]]
+3. [[#Обновление карт OSM]]
+	- [[#Вариант номер 1 (требует очистки кэша)]]
+	- [[#Вариант номер 2 (с удалением грязных страниц)]]
+
+
+# Установка на Astra Linux 1.8 Воронеж
+
+__Подключенные репозитории__
+
+*cat /etc/apt/sources.list*
+
+```
+deb https://download.astralinux.ru/astra/stable/1.8_x86-64/repository-extended/ 1.8_x86-64 main contrib non-free non-free-firmware
+deb https://download.astralinux.ru/astra/stable/1.8_x86-64/repository-main/ 1.8_x86-64 main contrib non-free non-free-firmware
+deb https://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
+```
+
+
+*cat /etc/apt/sources.list.d/postgres-iso.list*
+
+```
+deb cdrom:[postgres]/astra-smolensk/1.8/ 1.8_x86-64 main
+```
+
+***Установка базы данных***
+
+```
+sudo apt install postgrespro-std-17-server
+sudo apt install libgdal32 libboost-serialization1.74.0 libgmpxx4ldbl libsfcgal1
+sudo apt install postgis-std-17
+sudo dpkg -i /media/postgis-std-17_3.3.7-2.18x8664_amd64.deb
+```
+
+
+# Установка на Ubuntu 20.04
 ##### 1. ***Установка системных пакетов:***
 ```
 sudo apt install libboost-all-dev git tar unzip wget bzip2 build-essential autoconf libtool libxml2-dev libgeos-dev libgeos++-dev libpq-dev libbz2-dev libproj-dev munin-node munin protobuf-c-compiler libfreetype6-dev libtiff5-dev libicu-dev libgdal-dev libcairo2-dev libcairomm-1.0-dev apache2 apache2-dev libagg-dev liblua5.2-dev ttf-unifont lua5.1 liblua5.1-0-dev
@@ -107,7 +144,12 @@ ALTER USER osm WITH PASSWORD '<password>';
 ```
 
 ```
-osm2pgsql --create -U osm -W --slim -H localhost -d gis --hstore --multi-geometry --number-processes 10 --tag-transform-script /home/osm/openstreetmap-carto/openstreetmap-carto.lua  --style /home/osm/openstreetmap-carto/openstreetmap-carto.style -C 10000 /home/osm/data/azerbaijan-200101.osm.pbf
+osm2pgsql --create -U osm -W --slim -H localhost -d gis --hstore --multi-geometry --number-processes 10 --tag-transform-script /home/osm/openstreetmap-carto/openstreetmap-carto.lua  --style /home/osm/openstreetmap-carto/openstreetmap-carto.style -C 10000 /home/osm/data/azerbaijan.osm.pbf
+```
+
+Команда выполненная на BorderOSM:
+```
+osm2pgsql --create --slim --number-processes 16 -C 32000 -U osm -W -H localhost -d gis --hstore --multi-geometry -O flex -S openstreetmap-carto-flex.lua  /home/osm/data/azerbaijan-latest.osm.pbf
 ```
 
 > `-d`            : База данных, с которой мы работаем
@@ -489,11 +531,15 @@ sudo vim /etc/apache2/sites-available/tileserver_site.conf
 
 </VirtualHost>
 
-# +++
+
+
+
+
 <VirtualHost *:443>
      SSLEngine on
      SSLCertificateFile /home/osm/certs/osm-test.crt
      SSLCertificateKeyFile /home/osm/certs/osm-test.key
+     
 #     SSLCertificateChainFile /etc/ssl/chain.crt
 
     ServerName osm.test.local
@@ -664,3 +710,445 @@ sudo systemctl start renderd
 sudo apt-get install fonts-hanazono
 ```
 
+##### An error occurred while loading the map layer 'default': Postgis Plugin: ERROR:  function carto_path_type(text, text) does not exist
+```
+psql -d gis -f /home/osm/openstreetmap-carto/functions.sql 
+```
+
+
+Изменение службы (добавление дополнительного каталога для размещения файла sock)
+sudo systemctl edit postgrespro-std-17.service
+
+```
+[Service]
+RuntimeDirectory=postgresql
+```
+
+>`systemctl RuntimeDirectory` — это опция в конфигурационных файлах `systemd`, которая указывает, какие каталоги должны быть созданы в директории `/run` (или `/var/run`) при запуске службы.
+
+# Обновление карт OSM
+___
+##### Вариант номер 1 (требует очистки кэша)
+
+> [!question] Важное замечание
+> Временной интервал на котором тестировалось обновление:
+> 2025-09-01 : 2025-11-13 Обновление ***успешно прошло*** (2,5 месяца)
+> 2025-01-01 : 2025-11-13 Обновление ***ошибка*** (11,5 месяцев)
+
+---
+Ручной запуск команды ***рендеринга*** без использования службы:
+```
+sudo -u osm renderd -f -c /etc/renderd.conf 
+```
+![[Снимок экрана от 2025-11-12 10-34-53.png]]
+
+Просмотр логов службы ***renderd:***
+```
+sudo journalctl -f -n 50 -u renderd.service
+```
+![[Снимок экрана от 2025-11-12 10-43-05.png]]
+
+Запуск рендеринга (рисовка тай лов в cache):
+```
+render_list -m default -a -z 0 -Z 19 --num-threads=16
+```
+
+> [!NOTE] Информация
+> Параметр: --num-threads : количество потоков в соответствии с количеством ядер ЦП на вашем сервере. *Например если num-threads равно 4, то это значит, что одновременно могут быть задействованы 4 worker-а (см. рисунок)* 
+> Параметр: -z 0 -Z 19 : уровень масштабирования
+> 
+![[Снимок экрана от 2025-11-12 11-54-28.png]]
+
+Проверка работы от рисовки в браузере и определение какой масштаб в текущий момент:
+```
+sudo journalctl -f -n 20 -u apache2
+```
+![[Снимок экрана от 2025-11-12 12-07-46.png]]
+
+Необязательный шаг ***удалить*** существующую базу и ***создать*** новую
+- ***Удаление базы данных***
+```
+sudo systemctl stop renderd.service
+```
+
+```
+sudo rm -rf /data/cache/renderd/tiles/default/*
+```
+
+```
+sudo -u postgres -i
+```
+
+```
+psql
+```
+
+```
+\l
+```
+
+```
+DROP DATABASE IF EXISTS gis;
+```
+
+```
+\q
+```
+![[Снимок экрана от 2025-11-13 11-41-56.png]]
+___
+- ***Создание базы данных***
+```
+createdb -E UTF8 -O osm gis
+```
+
+```
+psql
+```
+
+```
+\c gis
+```
+
+```
+CREATE EXTENSION postgis;
+```
+
+```
+CREATE EXTENSION hstore;
+```
+
+```
+ALTER TABLE geometry_columns OWNER TO osm;
+```
+
+```
+ALTER TABLE spatial_ref_sys OWNER TO osm;
+```
+
+```
+psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO osm;" -d gis
+```
+
+```
+\q
+```
+
+![[Снимок экрана от 2025-11-13 10-18-13.png]]
+___
+- ***Импорт*** скачанных готовых данных из файла osm.pbf в базу данных postgresql 
+```
+osm2pgsql --create --slim --number-processes 16 -C 32000 -U osm -W -H localhost -d gis --hstore --multi-geometry -O flex -S /home/osm/openstreetmap-carto/openstreetmap-carto-flex.lua /home/osm/data/azerbaijan.osm.pbf
+```
+![[Снимок экрана от 2025-11-13 10-26-56.png]]
+```
+psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO osm;" -d gis
+```
+![[Снимок экрана от 2025-11-13 12-15-17.png]]
+___
+- ***Убедиться***, что создались таблицы: **planet_osm_ways, planet_osm_nodes*
+```
+psql
+```
+```
+\c gis
+```
+```
+\dt
+```
+```
+\q
+```
+![[Снимок экрана от 2025-11-13 10-31-41.png]]
+```
+cd /home/osm/openstreetmap-carto
+```
+
+```
+./scripts/get-external-data.py
+```
+
+```
+./scripts/get-fonts.sh
+```
+![[Снимок экрана от 2025-11-13 11-59-51.png]]
+```
+psql -d gis -f /home/osm/openstreetmap-carto/functions.sql
+```
+![[Снимок экрана от 2025-11-13 15-11-25.png]]
+```
+psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO osm;" -d gis
+```
+
+```
+exit
+```
+
+```
+sudo systemctl start renderd.service
+```
+
+```
+sudo systemctl status renderd.service
+```
+
+```
+sudo -u osm renderd -f -c /etc/renderd.conf 
+```
+___
+- ***Установка программы Pyosmium*** для загрузки diff файлов с серверов osm
+[Официальный сайт программы Pyosmium](https://docs.osmcode.org/pyosmium/latest/user_manual/10-Replication-Tools/)
+```
+sudo apt install python3.11-venv
+```
+
+```
+sudo -u osm mkdir /home/osm/venv
+```
+
+```
+sudo chmod a+trwx chronograf/data/
+```
+
+```
+python3 -m venv /home/osm/venv/venvPyosmium
+```
+![[Снимок экрана от 2025-11-13 10-42-51.png]]
+```
+source /home/osm/venv/venvPyosmium/bin/activate
+```
+
+```
+pip install --upgrade pip
+```
+
+```
+pip install osmium
+```
+
+```
+pyosmium-get-changes --version
+```
+![[Снимок экрана от 2025-11-13 10-44-48.png]]
+![[Снимок экрана от 2025-11-13 10-46-19.png]]
+___
+- Узнаем с какого ***числа*** начинать обновления. Если у вас все еще есть файл **OSM**, который вы использовали для настройки базы данных (azerbaijan-251111.osm.pbf), создайте ***файл состояния*** следующим образом:
+```
+pyosmium-get-changes -O /home/osm/data/azerbaijan.osm.pbf -f /home/osm/data/sequence.state -v
+```
+```
+cat /home/osm/data/sequence.state
+```
+![[Снимок экрана от 2025-11-13 10-55-30.png]]
+> [!important] Важно
+> Запомните url (***https://download.geofabrik.de/asia/azerbaijan-updates***) в выводе команды (он понадобится при получении обновлений)
+
+___
+- Теперь можно ***создать (скачать)*** файл с изменениями
+
+> [!NOTE] Информация
+> pyosmium-get-changes загружает только около ***100 МБ обновлений*** одновременно (около 8 часов обновлений планеты). Если вы хотите больше, то добавьте параметр -size
+> - 1Gb - 3 дня обновлений планеты
+> - 10GB - 30 дней обновлений планеты
+
+```
+pyosmium-get-changes --server https://download.geofabrik.de/asia/azerbaijan-updates -f /home/osm/data/sequence.state -o /home/osm/data/newchange.osc.gz
+```
+
+```
+ls -l /home/osm/data/newchange.osc.gz
+```
+![[Снимок экрана от 2025-11-13 11-30-33.png]]
+___
+- ***Применить*** (обновить базу данных postgresql) скачанные изменения 
+Использовать ту же команду, что и при создании базы данных, только добавить вместо файла osm.pbf файл с изменениями
+```
+osm2pgsql --append --slim --number-processes 16 -C 32000 -U osm -W -H localhost -d gis --hstore --multi-geometry -O flex -S /home/osm/openstreetmap-carto/openstreetmap-carto-flex.lua /home/osm/data/newchange.osc.gz
+```
+![[Снимок экрана от 2025-11-13 13-17-12.png]]
+
+- ***Очистить cache***
+```
+sudo systemctl stop renderd.service
+```
+
+```
+sudo rm -r /data/cache/renderd/tiles/default/*
+```
+
+```
+sudo systemctl start renderd.service
+```
+
+- ***Простой скрипт*** для получения обновлений
+
+```
+while true; do
+  # pyosmium-get-changes would not overwrite an existing change file
+  rm -f newchange.osc.gz
+  # get the next batch of changes
+  pyosmium-get-changes -f sequence.state -o newchange.osc.gz
+  # save the return code
+  status=$?
+
+  if [ $status -eq 0 ]; then
+    # apply newchange.osc.gz here
+    ....
+  elif [ $status -eq 3 ]; then
+    # No new data, so sleep for a bit
+    sleep 60
+  else
+    echo "Fatal error, stopping updates."
+    exit $status
+  fi
+done
+```
+
+##### Вариант номер 2 (с удалением грязных страниц)
+[Сайт с приведенной ниже инструкцией](https://switch2osm.org/serving-tiles/updating-as-people-edit-osm2pgsql-replication/#Creating-scripts-to-apply-updates)
+- **Инициализируем** репликацию
+```
+sudo -u osm osm2pgsql-replication init -d gis --osm-file /home/osm/data/azerbaijan.osm.pbf
+```
+![[Снимок экрана от 2025-11-14 10-32-15.png]]
+
+- ***Создаем файл логов*** и скрипт для применения обновлений и удаления грязных плиток
+```
+sudo mkdir /var/log/tiles
+```
+
+```
+sudo chown osm /var/log/tiles
+```
+
+```
+sudo vim /usr/local/sbin/expire_tiles.sh
+```
+
+`Пример файла expire_tiles.sh`
+```
+#!/bin/bash
+render_expired --map=s2o --min-zoom=13 --max-zoom=20 -s /run/renderd/renderd.sock < /data/cache/renderd/dirty_tiles.txt
+rm /data/cache/renderd/dirty_tiles.txt
+```
+> [!NOTE] Title
+> Будет предпринята попытка перерисовать все грязные тайлы, начиная с уровня масштабирования 13.
+
+`Еще один вариант файла expire_tiles.sh` - ***более предпочтительный***
+```
+#!/bin/bash
+render_expired --min-zoom=13 --touch-from=13 --delete-from=18 --max-zoom=19 -s /run/renderd/renderd.sock -t /data/cache/renderd/tiles < /data/cache/renderd/dirty_tiles.txt
+```
+> [!NOTE] Title
+> Плитки до уровня 12 игнорируются, плитки с 
+> уровнями масштабирования 13–19 помечаются как грязные, а плитки с уровнем масштабирования 19 удаляются
+
+![[Снимок экрана от 2025-11-14 10-33-53.png]]
+
+- ***Создаем основной*** выполняемый скрипт
+
+```
+sudo vim /usr/local/sbin/update_tiles.sh
+```
+
+```
+#!/bin/bash
+osm2pgsql-replication update -d gis --post-processing /usr/local/sbin/expire_tiles.sh --max-diff-size 100  --  --number-processes 16 -C 32000 --hstore --multi-geometry -O flex -S /home/osm/openstreetmap-carto/openstreetmap-carto-flex.lua --expire-tiles=1-19 --expire-output=/data/cache/renderd/dirty_tiles.txt
+```
+
+> [!NOTE] Title
+> `--max-diff-size 100`сколько данных обрабатываем за раз, но учтите, что osm2pgsql-replication фактически будет повторять загрузку данных и обновление базы данных до тех пор, пока не останется данных для обработки, что может занять некоторое время. определяет `--max diff-size`объём данных, извлекаемых за каждую итерацию.
+
+```
+sudo setfacl -m u:osm:rwx /usr/local/sbin/expire_tiles.sh /usr/local/sbin/update_tiles.sh
+```
+
+```
+sudo chmod ugo+x /usr/local/sbin/update_tiles.sh /usr/local/sbin/expire_tiles.sh
+```
+
+![[Снимок экрана от 2025-11-14 11-32-37.png]]
+
+- Включаем ***отладочные сообщения*** (только на этапе тестирования)
+
+> [!NOTE] Title
+> Чтобы увидеть вывод процесса рендеринга тайлов, чтобы убедиться, что тайлы, помеченные как грязные, обрабатываются. По умолчанию в последних версиях mod_tile эта функция отключена.
+
+```
+sudo systemctl edit renderd.service
+```
+
+```
+[Service]
+Environment=G_MESSAGES_DEBUG=all
+```
+
+```
+sudo systemctl daemon-reload
+```
+
+```
+sudo systemctl restart renderd
+```
+
+```
+sudo systemctl restart apache2
+```
+
+- ***Тестирование***
+
+В другом сеансе:
+
+```
+sudo tail -f /var/log/syslog
+```
+
+или если вы используете Debian 12, в котором по умолчанию нет файла «syslog»:
+
+```
+sudo journalctl -ef
+```
+
+Запускаем скрипт:
+```
+sudo -u osm /usr/local/sbin/update_tiles.sh
+```
+
+![[Снимок экрана от 2025-11-14 11-38-46.png]]
+![[Снимок экрана от 2025-11-14 11-38-55.png]]
+
+- ***Добавляем cron***
+Изменяем файл update_tiles.sh
+```
+#!/bin/bash
+echo
+echo "update_tiles.sh run:" `date`
+#
+if ! command -v osm2pgsql-replication &> /dev/null
+then
+    echo "osm2pgsql-replication could not be found"
+    exit 1
+fi
+#
+if [[ -f /var/cache/renderd/update_tiles.sh.running ]]
+then
+    echo "update_tiles.sh already running; /var/cache/renderd/update_tiles.sh.running exists"
+    exit 1
+else
+    touch /data/cache/renderd/update_tiles.sh.running
+fi
+#
+if ! osm2pgsql-replication update -d gis --post-processing /usr/local/sbin/expire_tiles.sh --max-diff-size 20  -- --number-processes 16  -C 32000 --hstore --multi-geometry -O flex -S /home/osm/openstreetmap-carto/openstreetmap-carto-flex.lua --expire-tiles=1-19 --expire-output=/data/cache/renderd/dirty_tiles.txt > /data/cache/renderd/osm2pgsql-replication.$$ 2>&1
+then
+    echo "osm2pgsql-replication error"
+    cat /var/cache/renderd/osm2pgsql-replication.$$
+else
+    grep Backlog /var/cache/renderd/osm2pgsql-replication.$$ | tail -1
+    rm /var/cache/renderd/osm2pgsql-replication.$$
+fi
+#
+rm /var/cache/renderd/update_tiles.sh.running
+#
+```
+
+osm2pgsql-replication update -d gis --post-processing /usr/local/sbin/expire_tiles.sh --max-diff-size 10  --  --number-processes 16 -C 32000 --hstore --multi-geometry -O flex -S /home/osm/openstreetmap-carto/openstreetmap-carto-flex.lua \
+    --expire-tiles=1-19 --expire-output=/data/cache/renderd/dirty_tiles.txt
