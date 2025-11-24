@@ -1,4 +1,6 @@
- [Установка и настройка selectel](https://selectel.ru/blog/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04/)
+[Установка и настройка selectel](https://selectel.ru/blog/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04/)
+[[Создание базы данных]]
+[[Перенос базы на другой диск]]
 
 <h1>Установка:</h1>
 ```
@@ -44,16 +46,6 @@ exit
 
 ![[Снимок экрана от 2025-04-24 11-57-24.png]]
 
-<h1> Создание базы данных</h1>
-```
-sudo -u postgres -i
-createdb -E UTF8 -O dbtest dbtest
-psql
-\l
-\q
-exit
-```
-![[Снимок экрана от 2025-04-24 12-08-24.png]]
 
 > [!NOTE] Информация
 > 

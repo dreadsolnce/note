@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "bash/Terminal console commands.md",
-                "mode": "preview",
+                "file": "os/acl.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Terminal console commands"
+              "title": "acl"
             }
           },
           {
@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "program/php.md",
+                "file": "program/tmux.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "php"
+              "title": "tmux"
             }
           },
           {
@@ -56,7 +56,7 @@
               "type": "markdown",
               "state": {
                 "file": "work/OSM.md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "work/OSM.md",
+                "file": "os/ssh.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "OSM"
+              "title": "ssh"
             }
           },
           {
@@ -83,12 +83,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "os/сеть.md",
+                "file": "os/screen.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "сеть"
+              "title": "screen"
             }
           },
           {
@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "program/postgres.md",
+                "file": "program/postgres/Перенос базы на другой диск.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "postgres"
+              "title": "Перенос базы на другой диск"
             }
           },
           {
@@ -111,12 +111,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "program/zypper.md",
-                "mode": "source",
+                "file": "os/сеть.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "zypper"
+              "title": "сеть"
             }
           },
           {
@@ -134,7 +134,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -289,44 +289,47 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "2a6bc09942802dcc",
+  "active": "cb6a1bae806c83eb",
   "lastOpenFiles": [
-    "Screenshot_188.png",
-    "README.md",
-    "screenhost/Снимок экрана от 2025-11-01 10-35-44.png",
-    "program/ufw.md",
-    "bash/Terminal console commands.md",
-    "work/OSM.md",
-    "program/postgres.md",
-    "os/сеть.md",
-    "курсы/DevOps-инженер курс для действующих IT-специалистов/Виртуализация и контейнерезация/Домашнее задание 3.md",
-    "курсы/DevOps-инженер курс для действующих IT-специалистов/Виртуализация и контейнерезация/Домашнее задание 4.md",
-    "курсы/DevOps-инженер курс для действующих IT-специалистов/Виртуализация и контейнерезация/Домашнее задание 2.md",
-    "program/docker.md",
-    "os/acl.md",
-    "program/zypper.md",
+    "program/elasticsearch.md",
     "program/tmux.md",
-    "program/firewall-cmd.md",
-    "program/nginx.md",
-    "program/bash (scripts).md",
-    "screenhost/Снимок экрана от 2025-11-14 11-38-55.png",
-    "screenhost/Снимок экрана от 2025-11-14 11-38-46.png",
-    "screenhost/Снимок экрана от 2025-11-14 11-32-37.png",
-    "screenhost/Снимок экрана от 2025-11-14 10-33-53.png",
-    "screenhost/Снимок экрана от 2025-11-14 10-32-15.png",
-    "Вариант номер 1 (требует очистки кэша).md",
-    "курсы/DevOps-инженер курс для действующих IT-специалистов/Система управления конфигурациями/Введение в ansible.md",
-    "screenhost/Снимок экрана от 2025-11-13 15-56-08.png",
-    "screenhost/Снимок экрана от 2025-11-13 15-11-25.png",
+    "os/screen.md",
+    "work/OSM.md",
     "os/ssh.md",
-    "screenhost/Снимок экрана от 2025-11-13 13-17-12.png",
-    "screenhost/Снимок экрана от 2025-11-13 12-15-17.png",
+    "work/тестирование ssh обрывов.md",
+    "System OS/Astra Linux 1.8/gitlab-runner.md",
+    "System OS/Astra Linux 1.8/Postgresql.md",
+    "System OS/Astra Linux 1.8/Синхронизации времени.md",
+    "System OS/Astra Linux 1.8/Основные команды настройки ОС.md",
+    "os/acl.md",
+    "os/сеть.md",
+    "program/elasticsearch/vector/Тестовый файл.md",
+    "program/elasticsearch/Создание index (kibana).md",
+    "program/elasticsearch/Визуализация.md",
+    "program/elasticsearch/Просмотр логов.md",
+    "Снимок экрана от 2025-11-20 17-31-22.png",
+    "Снимок экрана от 2025-11-20 17-30-21.png",
+    "Снимок экрана от 2025-11-20 17-27-54.png",
+    "Снимок экрана от 2025-11-20 17-27-42.png",
+    "Снимок экрана от 2025-11-20 17-27-31.png",
+    "Снимок экрана от 2025-11-20 16-42-35.png",
+    "Снимок экрана от 2025-11-20 16-42-23.png",
+    "program/postgres.md",
+    "program/postgres/Перенос базы на другой диск.md",
+    "program/elasticsearch/vector",
+    "Снимок экрана от 2025-11-20 14-55-32.png",
+    "Снимок экрана от 2025-11-20 14-55-21.png",
+    "Снимок экрана от 2025-11-20 14-55-10.png",
+    "program/elasticsearch",
+    "program/postgres/Создание базы данных.md",
+    "program/zypper.md",
+    "program/postgres",
+    "bash/Terminal console commands.md",
+    "programming/pm2.md",
     "program/php.md",
-    "курсы/DevOps-инженер курс для действующих IT-специалистов/Система управления конфигурациями/работа с roles.md",
-    "курсы/DevOps-инженер курс для действующих IT-специалистов/Система управления конфигурациями/Работа с playbook.md",
-    "program/php-fpm.md",
-    "System OS/RedHat - CentOS/Настройка сети.md",
-    "program/python скрипты/ps_mem.py.md",
+    "README.md",
+    "program/ufw.md",
+    "курсы/DevOps-инженер курс для действующих IT-специалистов/Виртуализация и контейнерезация/Домашнее задание 3.md",
     "program/python скрипты"
   ]
 }

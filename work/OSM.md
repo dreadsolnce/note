@@ -825,15 +825,24 @@ ALTER TABLE geometry_columns OWNER TO osm;
 ALTER TABLE spatial_ref_sys OWNER TO osm;
 ```
 
-```
-psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO osm;" -d gis
-```
-
-```
-\q
-```
-
 ![[Снимок экрана от 2025-11-13 10-18-13.png]]
+
+```
+psql
+```
+
+```
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO osm;
+GRANT ALL PRIVILEGES ON DATABASE gis TO osm;
+ALTER DATABASE gis OWNER TO osm;
+```
+
+```
+\l
+```
+
+![[Снимок экрана от 2025-11-19 17-48-50.png]]
+
 ___
 - ***Импорт*** скачанных готовых данных из файла osm.pbf в базу данных postgresql 
 ```
@@ -941,6 +950,7 @@ cat /home/osm/data/sequence.state
 ![[Снимок экрана от 2025-11-13 10-55-30.png]]
 > [!important] Важно
 > Запомните url (***https://download.geofabrik.de/asia/azerbaijan-updates***) в выводе команды (он понадобится при получении обновлений)
+> Для сервера BorderOSM url (***https://planet.osm.org/replication/minute/***)
 
 ___
 - Теперь можно ***создать (скачать)*** файл с изменениями
@@ -964,6 +974,7 @@ ___
 ```
 osm2pgsql --append --slim --number-processes 16 -C 32000 -U osm -W -H localhost -d gis --hstore --multi-geometry -O flex -S /home/osm/openstreetmap-carto/openstreetmap-carto-flex.lua /home/osm/data/newchange.osc.gz
 ```
+
 ![[Снимок экрана от 2025-11-13 13-17-12.png]]
 
 - ***Очистить cache***
