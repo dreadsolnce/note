@@ -34,17 +34,6 @@ ssh kolchinvll@127.0.0.1 -p 12312
 ssh-copy-id -i /home/kvl/.ssh/id_rsa.pub administrator@ai-back1p
 ![[Снимок экрана от 2025-04-23 14-06-59.png]]
 
-#### Настройка времени жизни сессии ssh для конкретного клиента (компьютера):
- На клиенте, не на сервере создать (отредактировать) файл ~/.ssh/config
-```
-Host *
-ServerAliveInterval 20
-```
-
-```
-chmod 600 /home/kvl/.ssh/config
-```
-
 #### Настройка подключения по ssh:
 
 Использовать два файла: ~/.ssh/config либо общесистемный /etc/ssh/ssh_config
