@@ -40,3 +40,8 @@ if [ "$num1" -ne "num2" ] || [ "$num1" -eq "$num2" ]; then
 `if [ ! -d "dev.kvlpro.ru" ]; then echo "Нет директории!"; fi`
 > ! : условие наоборот
 
+***Перенаправление вывода:***
+
+*Перенаправление вывода ошибки:*
+
+`zypper search --installed-only --match-exact python3-rpm 2> /dev/null`

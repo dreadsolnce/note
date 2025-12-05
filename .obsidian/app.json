@@ -7,5 +7,6 @@
     "downscalePercent": 81
   },
   "readableLineLength": false,
-  "showLineNumber": true
+  "showLineNumber": true,
+  "alwaysUpdateLinks": true
 }

@@ -4,137 +4,66 @@
     "type": "split",
     "children": [
       {
-        "id": "5c770b2e7bef56e5",
+        "id": "11d626f70bed0de4",
         "type": "tabs",
         "children": [
           {
-            "id": "93ddecfb41665957",
+            "id": "221e9fb0b3e3ceb5",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "os/acl.md",
+                "file": "program/zypper.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "acl"
+              "title": "zypper"
             }
           },
           {
-            "id": "881af7710ee1ad3c",
+            "id": "71f46dad81608af4",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "курсы/DevOps-инженер курс для действующих IT-специалистов/Виртуализация и контейнерезация/Домашнее задание 3.md",
+                "file": "programming/pm2.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Домашнее задание 3"
+              "title": "pm2"
             }
           },
           {
-            "id": "2a6bc09942802dcc",
+            "id": "aaf6c52e064cfa51",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "program/tmux.md",
+                "file": "bash/Terminal console commands.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "tmux"
+              "title": "Terminal console commands"
             }
           },
           {
-            "id": "cb6a1bae806c83eb",
+            "id": "afbe68d390c9c182",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "work/OSM.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "OSM"
-            }
-          },
-          {
-            "id": "b61586247cf8a1ef",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "os/ssh.md",
+                "file": "program/zabbix/Настройка метрик.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ssh"
-            }
-          },
-          {
-            "id": "fbfd9365b5b4f300",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "os/screen.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "screen"
-            }
-          },
-          {
-            "id": "31f3f9f21fe5d1e4",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "program/postgres/Перенос базы на другой диск.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Перенос базы на другой диск"
-            }
-          },
-          {
-            "id": "562c4d468ee2bbd3",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "os/сеть.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "сеть"
-            }
-          },
-          {
-            "id": "a653960daae9d481",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "program/docker.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "docker"
+              "title": "Настройка метрик"
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -166,7 +95,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "-R",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -174,7 +103,7 @@
                 "sortOrder": "alphabetical"
               },
               "icon": "lucide-search",
-              "title": "Search"
+              "title": "Поиск"
             }
           },
           {
@@ -289,47 +218,50 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "cb6a1bae806c83eb",
+  "active": "221e9fb0b3e3ceb5",
   "lastOpenFiles": [
-    "program/elasticsearch.md",
-    "program/tmux.md",
-    "os/screen.md",
-    "work/OSM.md",
-    "os/ssh.md",
-    "work/тестирование ssh обрывов.md",
-    "System OS/Astra Linux 1.8/gitlab-runner.md",
-    "System OS/Astra Linux 1.8/Postgresql.md",
-    "System OS/Astra Linux 1.8/Синхронизации времени.md",
-    "System OS/Astra Linux 1.8/Основные команды настройки ОС.md",
-    "os/acl.md",
-    "os/сеть.md",
-    "program/elasticsearch/vector/Тестовый файл.md",
-    "program/elasticsearch/Создание index (kibana).md",
-    "program/elasticsearch/Визуализация.md",
-    "program/elasticsearch/Просмотр логов.md",
-    "Снимок экрана от 2025-11-20 17-31-22.png",
-    "Снимок экрана от 2025-11-20 17-30-21.png",
-    "Снимок экрана от 2025-11-20 17-27-54.png",
-    "Снимок экрана от 2025-11-20 17-27-42.png",
-    "Снимок экрана от 2025-11-20 17-27-31.png",
-    "Снимок экрана от 2025-11-20 16-42-35.png",
-    "Снимок экрана от 2025-11-20 16-42-23.png",
-    "program/postgres.md",
-    "program/postgres/Перенос базы на другой диск.md",
-    "program/elasticsearch/vector",
-    "Снимок экрана от 2025-11-20 14-55-32.png",
-    "Снимок экрана от 2025-11-20 14-55-21.png",
-    "Снимок экрана от 2025-11-20 14-55-10.png",
-    "program/elasticsearch",
-    "program/postgres/Создание базы данных.md",
-    "program/zypper.md",
-    "program/postgres",
+    "program/1. postgressql/Старые заметки postgres.md",
     "bash/Terminal console commands.md",
+    "курсы/DevOps-инженер курс для действующих IT-специалистов/Kubernetes/kubctl.md",
+    "Снимок экрана от 2025-09-29 12-17-31.png",
+    "Снимок экрана от 2025-09-29 12-09-51.png",
+    "Снимок экрана от 2025-09-29 11-52-48.png",
+    "Снимок экрана от 2025-09-29 11-51-49.png",
+    "Снимок экрана от 2025-09-29 11-51-28.png",
+    "Снимок экрана от 2025-09-29 11-51-28 1.png",
+    "Снимок экрана от 2025-09-29 11-43-21.png",
+    "Снимок экрана от 2025-09-29 11-25-33.png",
+    "Снимок экрана от 2025-09-29 11-17-56.png",
+    "Снимок экрана от 2025-09-29 10-50-04.png",
+    "program/2. pm2/!---Содержание---!.md",
+    "program/2. pm2/Запуск FRONT.md",
+    "program/1. postgressql/!---Содержание---!.md",
+    "program/1. postgressql/Перенос базы на другой диск.md",
+    "program/1. postgressql/Изменение владельца таблицы.md",
+    "program/1. postgressql/Создание базы данных.md",
+    "курсы/DevOps-инженер курс для действующих IT-специалистов/Kubernetes",
+    "program/2. pm2",
+    "os/сеть/!---Содержание---!.md",
+    "os/сеть/traceroute.md",
+    "program/traceroute.md",
+    "program/postgresql",
+    "os/сеть/curl.md",
     "programming/pm2.md",
-    "program/php.md",
-    "README.md",
-    "program/ufw.md",
-    "курсы/DevOps-инженер курс для действующих IT-специалистов/Виртуализация и контейнерезация/Домашнее задание 3.md",
+    "programming/npm.md",
+    "program/zabbix/Настройка метрик.md",
+    "program/zabbix/zabbix-server.md",
+    "os/apt.md",
+    "work/OSM.md",
+    "os/bind keys.md",
+    "os/openvpn.md",
+    "os/proxy.md",
+    "os/сеть/Маршрутизация.md",
+    "os/сеть/Мониторинг.md",
+    "os/ssh.md",
+    "os/сеть",
+    "program/4. elasticsearch/vector",
+    "program/4. elasticsearch",
+    "program/1. postgressql",
     "program/python скрипты"
   ]
 }

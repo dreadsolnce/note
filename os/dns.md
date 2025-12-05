@@ -1,4 +1,4 @@
-[Ссылка на ресурс:](https://interface31.ru/tech_it/2022/10/nastraivaem-otkazoustoychivyy-dns-server-na-baze-bind-9.html)
+xqLkpOgPO89ua7!1[Ссылка на ресурс:](https://interface31.ru/tech_it/2022/10/nastraivaem-otkazoustoychivyy-dns-server-na-baze-bind-9.html)
 ## Проверка работы dns:
 
 ##### Проверка работы обратной зоны

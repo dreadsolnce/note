@@ -1,4 +1,9 @@
- [Установка и настройка selectel](https://selectel.ru/blog/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04/)
+[Установка и настройка selectel](https://selectel.ru/blog/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04/)
+[[Создание базы данных]]
+[[Перенос базы на другой диск]]
+
+
+***Назад:*** [[program/1. postgressql/!---Содержание---!|!---Содержание---!]]
 
 <h1>Установка:</h1>
 ```
