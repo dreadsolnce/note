@@ -28,3 +28,18 @@ kubectl config use-context name
 kubectl config set-credentials
 ```
 
+Более подробная информация о нодах
+```
+kubectl get nodes -o wide
+```
+
+Информация очень подробная о нодах 
+```
+kubectl describe nodes
+```
+
+Информация о подах
+```
+kubectl get pods -A
+```
+
