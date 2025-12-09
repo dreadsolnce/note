@@ -43,9 +43,25 @@ kubectl describe nodes
 kubectl apply -f nginx-test.yaml
 ```
 
-Информация о всех подах в том числе и системных 
+Пробросить порт для подключения локально
+
 ```
-kubectl get pods -A
+kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443
+```
+
+Просмотр сетевых подключений
+```
+kubectl get service
+```
+
+Подробная информация о сервисе
+```
+kubectl describe services/service-nginx
+```
+
+Пробросить порт сервиса
+```
+ kubectl port-forward svc/service-nginx 30000:80
 ```
 
 Информация о созданных подах
@@ -57,21 +73,43 @@ kubectl get pods
 ```
 kubectl get pods -n default
 ```
-где default - это имя namespace
+***где default - это имя namespace***
+
+Информация о подах по label
+```
+kubectl get pods -l app=web
+```
+
+Информация о всех подах в том числе и системных 
+```
+kubectl get pods -A
+```
+
+Подробная информация о pod-е
+```
+kubectl describe pod nginx
+```
+Подключиться к pod-у
+```
+kubectl exec -it nginx -- bash
+```
 
 Удаление пода
 ```
 kubectl delete pod <имя-пода> -n <namespace>
 ```
 
-Проброс порта для подключения локально
+Просмотр логов контейнера
+```
+kubectl logs deploy-app-6d76bd84dc-ds92h
+```
+
+Просмотр логов deployment конкретного контейнера
+```
+kubectl logs web-648c987c95-b97kr -c multitool-container
+```
 
 ```
-kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443
-```
-
-Просмотр сетевых подключений
-```
-kubectl get service
+kubectl logs web-648c987c95-b97kr -c nginx-container
 ```
 

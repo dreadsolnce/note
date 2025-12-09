@@ -65,4 +65,12 @@ curl -X POST -H "Host: test.example.local" -H "Content-Type: application/json" -
 
 ![[Снимок экрана от 2025-12-03 16-01-23.png]]
 
+**Отправка GET запроса с вводом auth_basic и выводом заголовков ответа сервера**
+```
+curl -u authusername:authuserpassword -I -X GET https://test-helper-ai.mos.ru/api/main/service-feedback/stat
+```
+![[Снимок экрана от 2025-12-09 12-33-04.png]]
+
+
+
 ***Назад:*** [[os/сеть/!---Содержание---!]]
