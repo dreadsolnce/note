@@ -24,7 +24,6 @@
 ```
 ansible-playbook -l dev -i inventory/prod.yml site.yml --diff --check
 ```
-=======
 *Запуск playbook-a по тегу:*
 
 `ansible-playbook -i inventory/prod.yml site.yml --tags "tag1,tag2,tag3" `
@@ -32,4 +31,7 @@ ansible-playbook -l dev -i inventory/prod.yml site.yml --diff --check
 *Запуск playbook-а с определенного play:*
 
 `ansible-playbook your_playbook.yml --start-at-play "First Play"`
->>>>>>> Stashed changes
+
+*Запуск с вводом пароля для зашифрованных файлов:*
+
+`ansible-playbook -i inventory/hosts.yml site.yml --ask-vault-pass`
