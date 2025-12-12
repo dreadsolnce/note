@@ -42,7 +42,7 @@ curl -H "Host: example.com" https://your-domain.com/path
 curl -H "Host: test.example.local" 'http://127.0.0.1/api/?type=PDO&firstname=Vladimir&year=1983'
 ```
 
-![[Снимок экрана от 2025-12-03 16-00-04.png]]
+![[Снимок экрана от 2025-12-03 16-00-04 1.png]]
 
 ```
 # Посмотреть, какие заголовки отдает сервер, при запросе с добавленным в ручну заголовком
@@ -63,6 +63,6 @@ curl http://127.0.0.1:8080/response-headers\?test\=test\&server\=httpbin -H "Hos
 curl -X POST -H "Host: test.example.local" -H "Content-Type: application/json" -d '{"type": "PG", "firstname": "Vladimir1", "year": "1983"}' http://127.0.0.1/api/
 ```
 
-![[Снимок экрана от 2025-12-03 16-01-23.png]]
+![[Снимок экрана от 2025-12-03 16-01-23 1.png]]
 
 ***Назад:*** [[os/сеть/!---Содержание---!]]
