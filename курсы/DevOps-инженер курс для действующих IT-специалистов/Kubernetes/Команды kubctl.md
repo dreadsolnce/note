@@ -3,12 +3,13 @@
 3. [[#POD и все что с ними связано]]
 4. [[#Service (сеть)]]
 5. [[#Логи]]
-6. 
+6. [[#Contoller Ingress]]
 
 Просмотр всех доступных api
 ```
 `kubectl api-versions`
 ```
+
 ##### Работа с кластером microk8
 
 ***Список кластеров***
@@ -186,3 +187,69 @@ kubectl logs web-648c987c95-b97kr -c multitool-container
 kubectl logs web-648c987c95-b97kr -c nginx-container
 ```
 
+Просмотр логов в реальном времени
+```
+kubectl logs -f web-648c987c95-b97kr
+```
+##### Contoller Ingress
+
+***Информация о контроллере***
+```
+kubectl describe ingress ingress-web 
+```
+
+![[Снимок экрана от 2025-12-13 13-30-09.png]]
+
+***Просмотр классов контроллера***
+```
+kubectl get ingressclasses.networking.k8s.io
+```
+
+![[Снимок экрана от 2025-12-13 13-31-49 1.png]]
+
+***Просмотр контроллера***
+```
+kubectl get ingress
+```
+
+![[Снимок экрана от 2025-12-13 13-31-11.png]]
+###### Пример файла
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-web
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "app.test.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-web-front
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: service-web-back
+            port:
+              number: 80
+  - host: "app2.test.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-web-back
+            port:
+              number: 80
+
+```
