@@ -3,9 +3,11 @@
 3. [[#POD и все что с ними связано]]
 4. [[#Deployment]]
 5. [[#Service (сеть)]]
-6. [[#Логи]]
-7. [[#Contoller Ingress]]
-8. [[#Volume]]
+6. [[#Contoller Ingress]]
+7. [[#Volume]]
+8. [[#ConfigMap]]
+9. [[#Role]]
+10. [[#Логи]]
 
 Просмотр всех доступных api
 ```
@@ -350,7 +352,7 @@ kubectl describe pv pvc-44a48fbf-9ee0-4319-ad46-ebaa35a96ae
 > [!NOTE] Описание примера
 > каталог указанный в path в манифесте pv создается на всех node кластера, но он не является общим ресурсом для всех pod, для каждого pod который запущен на конкретной node он будет своим. 
 
-PV
+**PV**
 ```yaml
 apiVersion: v1
 kind: PersistentVolume
@@ -368,7 +370,7 @@ spec:
     path: /home/ubuntu/localVolume/front
 ```
 
-PVC
+**PVC**
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -385,7 +387,7 @@ spec:
       storage: 5Gi
 ```
 
-DEPLOYMENT
+**DEPLOYMENT**
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -423,7 +425,7 @@ spec:
 > [!NOTE] Описание примера
 > Один из самых простых примеров монтирования каталога без pv и pvc, с помощью локального каталога на node
 
-DEPLOY
+**DEPLOY**
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -458,9 +460,9 @@ spec:
 
 
 > [!NOTE] Описание использования storage class
-> Данный пример  показывает настройку storage class (встроенный в microk7s) и pvc, без использования pv. PV создается автоматически при создании pvc
+> Данный пример  показывает настройку storage class (встроенный в microk8s) и pvc, без использования pv. PV создается автоматически при создании pvc
 
-sc.yml
+**sc.yml**
 ```
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -471,7 +473,7 @@ reclaimPolicy: Delete
 volumeBindingMode: Immediate
 ```
 
-pvc-front.yml
+**pvc-front.yml**
 ```
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -487,7 +489,7 @@ spec:
       storage: 1Gi
 ```
 
-deployment
+**deployment**
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -520,3 +522,203 @@ spec:
           claimName: pvc-vol-front
 # scp -r html ubuntu@158.160.71.158:/home/ubuntu/
 ```
+
+##### ConfigMap
+
+> [!NOTE] Описание
+> Для монтирования конфигурационных файлов и переменных окружения
+
+***Информация о созданных configmaps***
+```
+kubectl get configmaps
+```
+
+![[Снимок экрана от 2025-12-19 14-39-18.png]]
+
+***Подробная информация о configmaps***
+
+```
+kubectl describe configmaps configmap-multitool-html
+```
+
+![[Снимок экрана от 2025-12-19 14-41-47.png]]
+
+
+> [!NOTE] Описание
+> Для монтирования переменных окружения в закодированном виде
+
+***Информация о созданных secrets***
+
+```
+kubectl get secrets
+```
+
+![[Снимок экрана от 2025-12-19 15-38-23.png]]
+
+###### Примеры файлов
+
+> [!NOTE] Описание
+> Переменная задается в виде многострочного текста
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-multitool-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Welcome to nginx!</title>
+    <style>
+    html { color-scheme: light dark; }
+    body { width: 35em; margin: 0 auto;
+    font-family: Tahoma, Verdana, Arial, sans-serif; }
+    </style>
+    </head>
+    <body>
+    <h1>Server Back-End!</h1>
+    </body>
+    </html>
+```
+
+
+> [!NOTE] Описание
+> Переменная задается для перенаправления в pod в виде переменной окружения
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-multitool-env
+data:
+  HTTP_PORT: "8080"
+```
+
+
+> [!NOTE] Пример применения в deploymet
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: deploy-web
+spec:
+  replicas: 2 # Колличество подов
+  selector:
+    matchLabels:
+      app: deploy-web
+  template:
+    metadata:
+      labels:
+        app: deploy-web
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+          name: port-nginx
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html/
+            name: configmap-nginx-html
+
+      - name: multitool-container
+        image: praqma/network-multitool:alpine-extra
+        ports:
+        - containerPort: 8080
+          name: port-multi
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html/
+            name: configmap-multitool-html
+        env:
+        - name: HTTP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-multitool-env
+              key: HTTP_PORT
+      volumes:
+      - name: configmap-multitool-html
+        configMap:
+          name: configmap-multitool-html
+      - name: configmap-nginx-html
+        configMap:
+          name: configmap-nginx-html
+
+```
+
+
+> [!NOTE] Пример файла secrets
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-tls
+data:
+  tls.crt: |
+    LS0tLS1CRUdJTiBDRVJUSUZ
+  tls.key: |
+    LS0tLS1CRUdJTiBQUklWQVRFIEt
+type: kubernetes.io/tls
+```
+
+
+> [!NOTE] Пример использования secrets в файле ingress
+
+```
+  - host: "netology.webhop.me"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+       ....
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+        ...
+  tls:
+    - hosts:
+      - netology.webhop.me
+      secretName: secret-tls
+
+```
+
+##### Role
+
+> [!NOTE] Пример файла role.yml
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: 
+  name: role-netology
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch", "describe"]
+```
+
+
+> [!NOTE] Пример файла role-binding.yml 
+> Для применения правил указанных в role
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rolebinding
+subjects:
+  - kind: User
+    name: kvl
+    apiGroup: rbac.authorization.k8s.io
+roleRef: 
+  kind: Role
+  name: role-netology
+  apiGroup: rbac.authorization.k8s.io
+```
+
