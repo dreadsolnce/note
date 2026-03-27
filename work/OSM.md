@@ -5,7 +5,7 @@ __Оглавление__
 3. [[#Обновление карт OSM]]
 	- [[#Вариант номер 1 (требует очистки кэша)]]
 	- [[#Вариант номер 2 (с удалением грязных страниц)]]
-
+4. [[#Диагностика проблемы сервера OSM]]
 
 # Установка на Astra Linux 1.8 Воронеж
 
@@ -46,6 +46,12 @@ sudo apt install libboost-all-dev git tar unzip wget bzip2 build-essential autoc
 sudo apt-get install postgresql postgresql-contrib postgis postgresql-12-postgis-3 postgresql-12-postgis-3-scripts
 ```
 ##### 3. ***Настройка базы данных*** 
+
+
+> [!important] ВАЖНО
+> Использовать пользователя _renderd
+> Самого пользователя в системе не создавать
+
 ```
 sudo -u postgres -i
 createuser osm
@@ -1163,3 +1169,137 @@ rm /var/cache/renderd/update_tiles.sh.running
 
 osm2pgsql-replication update -d gis --post-processing /usr/local/sbin/expire_tiles.sh --max-diff-size 10  --  --number-processes 16 -C 32000 --hstore --multi-geometry -O flex -S /home/osm/openstreetmap-carto/openstreetmap-carto-flex.lua \
     --expire-tiles=1-19 --expire-output=/data/cache/renderd/dirty_tiles.txt
+
+# Диагностика проблемы сервера OSM
+
+## Диагностика
+
+> [!NOTE] Описание проблемы
+> Сервис renderd на сервере OSM был уничтожен системным киллером oom-killer 2025-12-02
+
+Вывод диагностического сообщения:
+
+```
+sudo journalctl --since "2025-12-01" -u renderd
+```
+
+![[Снимок экрана от 2026-02-06 17-20-15.png]]
+
+**Проверить наличие утечки памяти. Проверим через htop параметр Resident Set Size(RSS) — это объем физической оперативной памяти (RAM), который процесс занимает в данный момент. Это «честное» потребление памяти**
+
+![[Снимок экрана от 2026-02-06 17-36-22.png]]
+
+1.
+```
+watch -n 2 'ps -eo pid,comm,rss,vsz,%mem --sort=rss | grep -E "renderd|PID"'
+```
+
+2.
+```
+watch -n2 "echo Память: $(ps -o rss= -p $(pgrep renderd) | awk '{print $1/1024" MB"}')"
+```
+
+3.
+```
+smem -r -p | head -20
+```
+**Тестовый рендеринг:**
+
+```
+#!/bin/bash
+for i in {1..1000}; do
+	render_list -a -z 0 -Z 10 -n 4
+	sleep 1
+	echo "Итерация $i - Память: $(ps -o rss= -p $(pgrep renderd)) KB"
+done
+
+```
+
+***Проверяем установленные версии ПО***
+
+renderd
+```
+apt-cache policy renderd
+```
+
+![[Снимок экрана от 2026-02-09 10-56-29.png]]
+
+libmapnik
+```
+dpkg -l | grep libmapnik
+```
+
+![[Снимок экрана от 2026-02-09 11-04-19.png]]
+
+```
+apt-cache policy libmapnik3.1
+```
+
+![[Снимок экрана от 2026-02-09 11-14-23.png]]
+
+```
+ls -l /usr/lib/mapnik/3.1/input/
+```
+
+![[Снимок экрана от 2026-02-09 11-12-24.png]]
+
+python3-mapnik
+```
+apt-cache policy python3-mapnik
+```
+
+![[Снимок экрана от 2026-02-09 11-17-40.png]]
+
+## Предпринятые шаги
+
+1. Обновлена библиотека libmapnik3.1 и python3-mapnik
+
+```
+sudo apt install --only-upgrade libmapnik3.1
+```
+
+
+```
+sudo apt install --only-upgrade python3-mapnik
+```
+
+2. Обновлены файлы /etc/renderd.conf и /etc/systemd/system/renderd.service.d/override.conf
+
+Добавлены следующие параметры в renderd.conf
+
+```
+[renderd]
+num_threads=10
+ajax_validator=false
+plugins_dir=/usr/lib/mapnik/3.1/input
+
+[default]
+TILESIZE=256
+```
+
+Добавлены следующие параметры в override.conf
+```
+MemoryMax=32G
+MemoryHigh=28G
+CPUQuota=1000%
+TasksMax=100
+```
+
+Добавлены настройки в файл /etc/sysctl.conf
+```
+echo 'vm.overcommit_memory = 2' | sudo tee -a /etc/sysctl.conf
+```
+
+```
+echo 'vm.overcommit_ratio = 80' | sudo tee -a /etc/sysctl.conf
+```
+
+> [!NOTE] Описание
+> Параметр ядра Linux `vm.overcommit_memory` управляет стратегией выделения виртуальной памяти процессам, разрешая или запрещая запрашивать больше памяти, чем есть (перераспределение). По умолчанию (0) ядро делает «эвристическую» оценку, допуская перераспределение, но 1 разрешает его всегда, а 2 — запрещает, предотвращая сбои.
+
+
+> [!NOTE] Описание
+> Параметр `vm.overcommit_ratio` в Linux задает процент от общего объема физической оперативной памяти (RAM), который можно выделить процессам, плюс объем Swap, при использовании режима overcommit_memory=2. Он ограничивает объем виртуальной памяти, предотвращая "панику" ядра из-за нехватки памяти (OOM), позволяя контролировать перерасход ОЗУ. **Высокая нагрузка (базы данных):** Увеличение до 80-90% позволяет использовать больше ОЗУ, но требует осторожности, чтобы не вызвать OOM Killer.
+
+
+3. 3

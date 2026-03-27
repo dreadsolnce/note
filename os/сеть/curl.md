@@ -65,4 +65,37 @@ curl -X POST -H "Host: test.example.local" -H "Content-Type: application/json" -
 
 ![[Снимок экрана от 2025-12-03 16-01-23 1.png]]
 
+```
+# Получение и сохранение токена по логину и паролю (сохраняется в файл cookies.txt)
+curl -c cookies.txt -X POST -H "Content-Type: application/json" -d '{"login": "логин", "password": "пароль"}' https://aiplatform.mos.ru/app_login
+```
+
+```
+curl -vvv --location --request POST "https://aiplatform.mos.ru/app_login" --header 'Content-Type: application/json' --data-raw '{"login": "логин", "password":"пароль"}' -b cookie.txt -c cookie.txt
+```
+- [ ] 
+```
+# Скрыть вывод, оставить только код ответа
+curl -s -o /dev/null -w "%{http_code}" -X POST "https://models.aiplatform.mos.ru/operation/mistralsmall24b/v1/chat/completions" -H "Content-Type: application/json" -b 'cookie.txt' -c 'cookie.txt' -d '{
+    "model": "local_huggingface/Mistral-Small-3.2-24B-Instruct-2506",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Привет!"
+      }
+    ],
+    "max_tokens": 150,
+    "temperature": 0.3 }'
+
+```
+
+{"login": "sys_udrvs_prod_ai_helper_ai", "password": "J*YkKiewL7GKJkBG"}
+Content-Type
+application/json
+
+
+
+{"model": "local_huggingface/Mistral-Small-3.2-24B-Instruct-2506",  "messages": [ { "role": "user",  "content": "Привет!" } ], "max_tokens": 150, "temperature": 0.3}
+
+Content-Type         application/json
 ***Назад:*** [[os/сеть/!------Содержание------!]]

@@ -57,6 +57,16 @@ vim /etc/ansible/ansible.cfg
 >   Однако, нагрузка на сервер и сеть вырастет.
 > 
 
+###### Локальный запуск playbook-а:
+
+```
+ansible-playbook ansible-astra.yml --syntax-check
+```
+
+```
+ansible-playbook -i localhost, -c local playbook.yml
+```
+
 ##### Модули:
 
 **Пинг хостов :***
