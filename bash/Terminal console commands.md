@@ -269,7 +269,7 @@ usermod -aG webuser www-data
 Установить пакет:
 
 ```
-sudo apt insall bash-completion
+sudo apt install bash-completion
 ```
 
 Скопировать в буфер обмена

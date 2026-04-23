@@ -1,6 +1,16 @@
 ***Назад:*** [[program/5. zabbix/!-----Содержание-----!|!-----Содержание-----!]]
 
-1. **Проверить наличие плагина zabbix-agent2-plugin-postgresql**
+#### ***zabbix-agent***
+
+> [!NOTE] Информация
+> Файлы (такие как pgsql.bgwriter.sql, pgsql.scans.sql, pgsql.wal.stat.sql и другие) используются официальным шаблоном Zabbix:
+> PostgreSQL by Zabbix agent (в старых версиях он мог называться Template DB PostgreSQL).
+
+
+
+#### ***zabbix-agent-2***
+
+2. **Проверить наличие плагина zabbix-agent2-plugin-postgresql**
 
 ***Проверяем наличие конфигурационного файла плагина:***
 
