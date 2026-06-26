@@ -79,6 +79,23 @@ sudo ufw allow 21/tcp
 > [!info]
 > можно указывать в формате <номер порта>/<название протокола>
 
+***Разрешить протокол ICMP***
+
+```
+sudo vim /etc/ufw/before.rules
+```
+Добавьте туда следующее правило (если его там нет):
+```
++++ # allow ICMP
++++ -A ufw-before-output -p icmp -j ACCEPT
+```
+
+![[Снимок экрана от 2026-06-02 14-56-45.png]]
+
+```
+sudo ufw reload
+```
+
 ****Добавить разрешающее правило в ветку outgoing***
 
 ```
@@ -146,6 +163,16 @@ sudo ufw allow ZabbixAgent2
 sudo ufw allow from 172.16.126.9 to any app 'ZabbixAgent2'
 ```
 
+```
+sudo ufw insert 4 allow from 172.16.126.9 to any app 'ZabbixAgent2'
+```
+
+Вставить в определенное место:
+
+```
+sudo ufw insert 3 allow 'OpenSSH'
+```
+
 ***Готовый пример:***
 
 ```
@@ -155,6 +182,8 @@ ufw allow out from any to 0.0.0.0/0 port 123 proto udp
 ufw allow out from any to 172.16.118.3/32 app 'DNS'
 ufw allow out from any to 172.16.118.4/32 app 'DNS'
 ```
+
+
 
 [Ссылка №1 на статью](https://selectel.ru/blog/tutorials/how-to-configure-firewall-with-ufw-on-ubuntu-20/)
 

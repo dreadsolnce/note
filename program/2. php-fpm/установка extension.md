@@ -100,6 +100,61 @@ sudo ldconfig
 - для fpm
 	`/usr/sbin/php-fpm8.4 -m | grep rdkafka`
 
+
+==***установка openswoole***== ^49b785
+
+
+> [!NOTE] ВАЖНОЕ ЗАМЕЧАНИЕ
+> php-openswoole не работает одновременно с установленным swoole.
+> Поэтому перед установкой важно убедиться, что не установлен пакет php8.4-swoole
+
+**Есть три способа установки пакета openswoole: 
+- 1) через pecl 
+- 2) через менеджер пакетов apt 
+- 3) через компиляцию, пакеты для которого вкачиваются из репозитория github**
+___
+***2 способ: с помощью пакетного менеджера apt:***
+
+```
+sudo apt list --installed | grep swoole
+```
+
+удалить при необходимости пакет swoole
+
+```
+sudo apt install php8.4-openswoole
+```
+
+```
+php --ri openswoole
+```
+___
+==***установка pm2-logrotate***== ^b891df
+
+**Есть два способа установки:**
+- 1) не помню
+- 2) глобальный с помощью npm
+___
+***2 способ: с помощью npm***
+
+```
+npm install -g pm2-logrotate
+```
+
+```
+npm list -g pm2-logrotate
+```
+
+Запуск через pm2 (с настройками по умолчанию):
+```
+sudo -E -u user pm2 start /usr/local/lib/node_modules/pm2-logrotate/app.js --name pm2-logrotate
+```
+
+Запуск через pm2 (с пользовательскими настройками):
+```
+sudo -E -u user pm2 start /usr/local/lib/node_modules/pm2-logrotate/app.js --name pm2-logrotate --env '{"max_size": "10M", "retain": "7", "compress": "true", "rotateInterval": "0 0 * * *"}'
+```
+
 ***Назад:*** [[program/2. php-fpm/!------Содержание------!|!------Содержание------!]]
   
   

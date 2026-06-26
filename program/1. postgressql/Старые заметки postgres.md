@@ -1,5 +1,5 @@
 [Установка и настройка selectel](https://selectel.ru/blog/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04/)
-[[Создание базы данных]]
+[[Работа с базами данных]]
 [[Перенос базы на другой диск]]
 
 
